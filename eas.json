@@ -1,0 +1,16 @@
+{
+  "cli": {
+    "version": ">= 7.0.0"
+  },
+  "build": {
+    "preview": {
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_GEMINI_API_KEY": "AIzaSyCwIq-pBDtsy1lYIuiCRCZ1OBn6HZn-C7A"
+      }
+    },
+    "production": {}
+  }
+}

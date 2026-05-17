@@ -1,0 +1,10 @@
+{
+  "plugins": [
+    "expo-speech-recognition"
+  ],
+  "extra": {
+    "eas": {
+      "projectId": "0275be31-bc72-4558-9f8d-809e4b59eac4"
+    }
+  }
+}
