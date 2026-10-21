@@ -105,7 +105,7 @@ export const FinancialChatModal: React.FC<FinancialChatModalProps> = ({
   const handleClearChat = () => {
     Alert.alert(
       'Nova conversa',
-      'Deseja reiniciar a conversa com o Consultor Financeiro CFP®?',
+      'Deseja reiniciar a conversa com o Consultor Financeiro Inteligente?',
       [
         { text: 'Cancelar', style: 'cancel' },
         {
@@ -144,7 +144,7 @@ export const FinancialChatModal: React.FC<FinancialChatModalProps> = ({
           {!isUser && (
             <View style={styles.advisorHeaderInBubble}>
               <Text style={[styles.advisorNameText, { color: tokens.primary }]}>
-                Consultor CFP®
+                Consultor IA
               </Text>
             </View>
           )}
@@ -190,8 +190,8 @@ export const FinancialChatModal: React.FC<FinancialChatModalProps> = ({
               <Text style={[styles.headerTitle, { color: tokens.textPrimary }]}>
                 Consultor Financeiro
               </Text>
-              <View style={[styles.headerCfpBadge, { backgroundColor: tokens.primary }]}>
-                <Text style={styles.headerCfpBadgeText}>CFP®</Text>
+              <View style={[styles.headerAiBadge, { backgroundColor: tokens.primary }]}>
+                <Text style={styles.headerAiBadgeText}>IA</Text>
               </View>
             </View>
 
@@ -263,7 +263,7 @@ export const FinancialChatModal: React.FC<FinancialChatModalProps> = ({
                   <View style={[styles.assistantBubble, styles.thinkingBubble, { backgroundColor: tokens.card, borderColor: tokens.border }]}>
                     <ActivityIndicator size="small" color={tokens.primary} />
                     <Text style={[styles.thinkingText, { color: tokens.textSecondary }]}>
-                      Consultor CFP® analisando...
+                      Consultor IA analisando...
                     </Text>
                   </View>
                 </View>
@@ -354,12 +354,12 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     letterSpacing: -0.2,
   },
-  headerCfpBadge: {
+  headerAiBadge: {
     paddingHorizontal: 5,
     paddingVertical: 1,
     borderRadius: 4,
   },
-  headerCfpBadgeText: {
+  headerAiBadgeText: {
     color: '#FFFFFF',
     fontSize: 10,
     fontWeight: '800',

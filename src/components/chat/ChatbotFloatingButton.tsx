@@ -35,7 +35,7 @@ export const ChatbotFloatingButton: React.FC<ChatbotFloatingButtonProps> = ({
       ]}
       onPress={onPress}
       accessibilityRole="button"
-      accessibilityLabel="Abrir bate-papo com Consultor Financeiro CFP"
+      accessibilityLabel="Abrir bate-papo com Consultor Financeiro Inteligente"
     >
       <View style={[styles.iconContainer, { backgroundColor: tokens.primaryTonal }]}>
         <MaterialCommunityIcons name="headset" size={22} color={tokens.primary} />
@@ -48,8 +48,8 @@ export const ChatbotFloatingButton: React.FC<ChatbotFloatingButtonProps> = ({
           <Text style={[styles.buttonLabel, { color: tokens.textPrimary }]}>
             Consultor IA
           </Text>
-          <View style={[styles.cfpBadge, { backgroundColor: tokens.primary }]}>
-            <Text style={styles.cfpBadgeText}>CFP®</Text>
+          <View style={[styles.aiBadge, { backgroundColor: tokens.primary }]}>
+            <Text style={styles.aiBadgeText}>IA</Text>
           </View>
         </View>
         <Text style={[styles.buttonSub, { color: tokens.textSecondary }]}>
@@ -110,12 +110,12 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     letterSpacing: -0.2,
   },
-  cfpBadge: {
+  aiBadge: {
     paddingHorizontal: 4,
     paddingVertical: 1,
     borderRadius: 4,
   },
-  cfpBadgeText: {
+  aiBadgeText: {
     color: '#FFFFFF',
     fontSize: 9,
     fontWeight: '800',

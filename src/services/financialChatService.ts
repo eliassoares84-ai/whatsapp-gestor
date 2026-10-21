@@ -24,8 +24,8 @@ const CANDIDATE_MODELS = [
   'gemini-3.5-flash',
 ];
 
-const SYSTEM_PROMPT = `Você é o Consultor Financeiro CFP® (Certified Financial Planner) oficial do aplicativo SeuGestor.
-Você é um especialista sênior de alto nível no mercado financeiro brasileiro e global, com sólida formação e autoridade prática nos seguintes pilares:
+const SYSTEM_PROMPT = `Você é o Consultor Financeiro Inteligente oficial do aplicativo SeuGestor.
+Você é um especialista sênior de alto nível no mercado financeiro brasileiro e global, com sólida formação prática, metodológica e analítica nos seguintes pilares:
 
 1. MERCADO DE AÇÕES E RENDA VARIÁVEL:
    - Ações da B3 (Small caps, Blue chips, Dividendos, Crescimento), BDRs, ETFs (ex: IVVB11, WRLD11, BOVA11).
@@ -81,6 +81,11 @@ Você é um especialista sênior de alto nível no mercado financeiro brasileiro
    - Sucessão em vida: Doação de quotas aos filhos com reserva de usufruto vitalício, mantendo os pais na administração exclusiva e com poder de voto.
    - Cláusulas essenciais de proteção: Inalienabilidade, Impenhorabilidade, Incomunicabilidade e Reversão (as quotas voltam aos pais se o filho falecer antes).
    - Economia brutal: previne o desgaste e os custos devastadores do inventário judicial (que costuma drenar de 10% a 20% do patrimônio com honorários, custas e ITCMD progressivo).
+
+DIRETRIZES LEGAIS E REGULATÓRIAS OBRIGATÓRIAS:
+- NUNCA se denomine, apresente ou intitule como portador de qualquer certificação profissional formal (como CFP®, CFA, CNPI, CEA, CGA, CPA, etc.) nem como profissional formalmente credenciado por entidades de classe. Você é um assistente de inteligência artificial consultivo e analítico de alto nível.
+- Se o usuário perguntar diretamente se você possui certificação ou se é certificado (por exemplo, se você é CFP®), esclareça com simpatia e clareza que você é um consultor financeiro baseado em inteligência artificial do SeuGestor, munido de conhecimentos avançados de planejamento patrimonial 360°, mas que não possui certificação formal, licença regulamentada ou registro profissional de pessoa física.
+- Suas orientações possuem caráter educativo, analítico e de apoio a decisões financeiras, sempre preservando alto rigor técnico, matemático e estratégico.
 
 DIRETRIZES DE PERSONA E COMUNICAÇÃO:
 - Fale como um consultor humano experiente, caloroso, parceiro, ágil e altamente didático. NUNCA soe como um robô, atendente padrão ou FAQ de banco.
@@ -182,7 +187,7 @@ export const callFinancialAdvisorChat = async (
 
 /**
  * Motor consultivo de contingência com respostas de alta fidelidade
- * formuladas pela persona CFP caso a IA online esteja indisponível.
+ * formuladas pelo Consultor Financeiro Inteligente caso a IA online esteja indisponível.
  */
 export const generateOfflineAdvisoryResponse = (
   userQuery: string,
@@ -195,7 +200,7 @@ export const generateOfflineAdvisoryResponse = (
 
   if (query.includes('sac') || query.includes('price') || query.includes('financiamento imobiliario') || query.includes('amortizar')) {
     return (
-      `Ótima pergunta! Como consultor CFP, acompanho isso diariamente com meus clientes:\n\n` +
+      `Ótima pergunta! Como especialista em planejamento financeiro, acompanho isso diariamente:\n\n` +
       `**SAC vs Tabela Price no Financiamento:**\n\n` +
       `• **Tabela SAC (Sistema de Amortização Constante):** A amortização da dívida é igual todo mês, e os juros caem progressivamente. As parcelas começam mais altas e vão caindo. Ao final do contrato, você paga **muito menos juros totais** (geralmente entre 15% e 25% a menos que na Price).\n\n` +
       `• **Tabela Price:** Parcelas fixas do início ao fim. No começo, quase 80% da parcela é só juro puro e amortiza pouquíssimo o saldo devedor. Só vale a pena se a sua renda inicial não comportar a primeira parcela do SAC.\n\n` +
@@ -229,7 +234,7 @@ export const generateOfflineAdvisoryResponse = (
 
   if (query.includes('consorcio') || query.includes('consorcio vale a pena')) {
     return (
-      `Vou te dar a visão honesta de consultor CFP sobre consórcio, sem o discurso comercial dos bancos:\n\n` +
+      `Vou te dar a visão honesta e matemática de planejamento financeiro sobre consórcio, sem o discurso comercial dos bancos:\n\n` +
       `**Como funciona na prática?**\n` +
       `O consórcio não cobra juros, mas cobra **Taxa de Administração** (geralmente entre 14% e 25% no período), além de fundo de reserva e seguro prestamista. Além disso, a carta de crédito e as parcelas são reajustadas anualmente pela FIPE (veículos) ou INCC (imóveis).\n\n` +
       `**Quando VALE A PENA?**\n` +
@@ -269,7 +274,7 @@ export const generateOfflineAdvisoryResponse = (
 
   // Resposta padrão consultiva
   return (
-    `Olá! Como seu Consultor Financeiro CFP®, estou à sua disposição para analisar qualquer frente da sua vida financeira:\n\n` +
+    `Olá! Como seu Consultor Financeiro Inteligente, estou à sua disposição para analisar qualquer frente da sua vida financeira:\n\n` +
     `• **Investimentos:** Renda Fixa (CDB, Tesouro, LCI/LCA, Debêntures) e Renda Variável (Ações, FIIs, ETFs).\n` +
     `• **Crédito & Financiamentos:** Habitação (SAC vs Price, FGTS, quitação acelerada) e Veículos.\n` +
     `• **Planejamento Patrimonial:** Previdência Privada (PGBL/VGBL), Seguros de Vida resgatáveis, Holding Familiar e Sucessão.\n` +

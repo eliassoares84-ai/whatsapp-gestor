@@ -591,7 +591,7 @@ const DashboardScreenBase: React.FC = () => {
         />
       </ScrollView>
 
-      {/* Botão Flutuante do Consultor Financeiro CFP */}
+      {/* Botão Flutuante do Consultor Financeiro IA */}
       <ChatbotFloatingButton
         bottomOffset={fabBottomOffset + 12}
         onPress={() => {

@@ -11,7 +11,7 @@ import {
 const getInitialWelcomeMessage = (): ChatMessage => ({
   id: 'welcome-advisor-msg',
   sender: 'assistant',
-  text: `Olá! Sou seu Consultor Financeiro CFP® pessoal aqui no SeuGestor.\n\nTenho ampla vivência no mercado financeiro brasileiro e em planejamento patrimonial 360°. Posso te orientar desde a seleção de investimentos em Ações e Renda Fixa até estratégias avançadas de Financiamento Imobiliário (SAC vs Price), Veículos, Consórcios, Seguros de Vida, Previdência Privada (PGBL/VGBL), Tributação de IRPF e Holding Familiar.\n\nQual decisão ou dúvida financeira você gostaria de avaliar comigo hoje?`,
+  text: `Olá! Sou seu Consultor Financeiro Inteligente pessoal aqui no SeuGestor.\n\nTenho ampla vivência no mercado financeiro brasileiro e em planejamento patrimonial 360°. Posso te orientar desde a seleção de investimentos em Ações e Renda Fixa até estratégias avançadas de Financiamento Imobiliário (SAC vs Price), Veículos, Consórcios, Seguros de Vida, Previdência Privada (PGBL/VGBL), Tributação de IRPF e Holding Familiar.\n\nQual decisão ou dúvida financeira você gostaria de avaliar comigo hoje?`,
   timestamp: Date.now(),
 });
 

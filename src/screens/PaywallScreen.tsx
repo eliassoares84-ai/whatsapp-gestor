@@ -50,7 +50,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
       onSubscribe();
       Alert.alert(
         '🌟 Bem-vindo ao SeuGestor PRO!',
-        'Seu acesso ao Consultor Financeiro CFP® e aos Comandos de Voz por IA está liberado com sucesso.'
+        'Seu acesso ao Consultor Financeiro por IA e aos Comandos de Voz está liberado com sucesso.'
       );
     }, 450);
   };
@@ -217,7 +217,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
                 </View>
               </View>
 
-              {/* Feature 2: CFP Chatbot */}
+              {/* Feature 2: AI Financial Advisor */}
               <View
                 style={[
                   styles.featureCard,
@@ -237,7 +237,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
                   ]}
                 >
                   <MaterialCommunityIcons
-                    name="certificate-outline"
+                    name="finance"
                     size={24}
                     color={tokens.primary}
                   />
@@ -245,7 +245,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
                 <View style={styles.featureTextContainer}>
                   <View style={styles.featureHeaderRow}>
                     <Text style={[styles.featureTitle, { color: tokens.textPrimary }]}>
-                      Consultor Financeiro CFP® por IA
+                      Consultor Financeiro por IA
                     </Text>
                     <View
                       style={[

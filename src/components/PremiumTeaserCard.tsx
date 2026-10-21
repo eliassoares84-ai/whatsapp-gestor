@@ -116,7 +116,7 @@ export const PremiumTeaserCard: React.FC<PremiumTeaserCardProps> = ({
           color={isPremium ? tokens.primary : tokens.textInverse}
         />
         <Text style={[styles.ctaText, { color: isPremium ? tokens.primary : tokens.textInverse }]}>
-          {isPremium ? 'Conversar com Consultor CFP®' : t('premiumTeaser.ctaLocked', { defaultValue: 'Conhecer Recursos PRO' })}
+          {isPremium ? 'Conversar com Consultor IA' : t('premiumTeaser.ctaLocked', { defaultValue: 'Conhecer Recursos PRO' })}
         </Text>
       </Pressable>
     </View>

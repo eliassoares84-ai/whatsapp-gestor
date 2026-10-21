@@ -565,8 +565,8 @@ export const SettingsScreen: React.FC = () => {
               </View>
               <Text style={[styles.subCardDesc, { color: tokens.textSecondary }]}>
                 {isPremium
-                  ? 'Consultor Financeiro CFP® e Comandos de Voz por IA liberados.'
-                  : 'Desbloqueie o Consultor CFP® e Comandos de Voz por Inteligência Artificial.'}
+                  ? 'Consultor Financeiro por IA e Comandos de Voz liberados.'
+                  : 'Desbloqueie o Consultor Financeiro por IA e Comandos de Voz por Inteligência Artificial.'}
               </Text>
             </View>
             <MaterialCommunityIcons

@@ -10,7 +10,7 @@ jest.mock('react-native', () => ({
   Alert: { alert: jest.fn() },
 }));
 
-describe('financialChatService & Persona CFP', () => {
+describe('financialChatService & Consultor Inteligente', () => {
   beforeEach(() => {
     useChatStore.getState().clearHistory();
   });
@@ -57,17 +57,17 @@ describe('financialChatService & Persona CFP', () => {
 
     it('deve retornar resposta consultiva de acolhimento para dúvidas gerais', () => {
       const response = generateOfflineAdvisoryResponse('Boa tarde, preciso de ajuda');
-      expect(response).toContain('Consultor Financeiro CFP®');
+      expect(response).toContain('Consultor Financeiro Inteligente');
       expect(response).toContain('Investimentos');
     });
   });
 
   describe('useChatStore', () => {
-    it('inicia com a mensagem de boas-vindas do consultor CFP', () => {
+    it('inicia com a mensagem de boas-vindas do consultor inteligente', () => {
       const state = useChatStore.getState();
       expect(state.messages.length).toBeGreaterThanOrEqual(1);
       expect(state.messages[0]?.sender).toBe('assistant');
-      expect(state.messages[0]?.text).toContain('Consultor Financeiro CFP®');
+      expect(state.messages[0]?.text).toContain('Consultor Financeiro Inteligente');
     });
 
     it('permite enviar mensagens e adiciona resposta do consultor', async () => {
