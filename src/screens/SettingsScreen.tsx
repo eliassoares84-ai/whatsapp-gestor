@@ -332,7 +332,7 @@ export const SettingsScreen: React.FC = () => {
 
   const handleSendSuggestion = async () => {
     const subject = encodeURIComponent(
-      t('settings.feedbackEmailSubject', { defaultValue: 'Sugestão de melhoria - WhatsApp Gestor' })
+      t('settings.feedbackEmailSubject', { defaultValue: 'Sugestão de melhoria - SeuGestor' })
     );
     const body = encodeURIComponent(
       t('settings.feedbackEmailBody', {

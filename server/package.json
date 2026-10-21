@@ -1,7 +1,7 @@
 {
-  "name": "whatsapp-gestor-ai-proxy",
+  "name": "seugestor-ai-proxy",
   "version": "1.0.0",
-  "description": "Secure AI Proxy for WhatsApp Gestor Mobile App",
+  "description": "Secure AI Proxy for SeuGestor Mobile App",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"

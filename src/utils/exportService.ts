@@ -286,7 +286,7 @@ export const exportToPDF = async (
         <body>
           <div class="header-banner">
             <div>
-              <div class="brand-title">WhatsApp Gestor</div>
+              <div class="brand-title">SeuGestor</div>
               <div class="brand-subtitle">
                 Espaço de Trabalho: <strong>${workspace.name}</strong> (${workspace.type === 'personal' ? 'Pessoal' : 'Empresarial'})
               </div>
@@ -355,7 +355,7 @@ export const exportToPDF = async (
           </table>
 
           <div class="footer">
-            <span>Gerado automaticamente pelo aplicativo WhatsApp Gestor (Local-First & Seguro)</span>
+            <span>Gerado automaticamente pelo aplicativo SeuGestor (Local-First & Seguro)</span>
             <span>Emitido em ${nowFormatted}</span>
           </div>
         </body>

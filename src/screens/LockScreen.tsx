@@ -198,7 +198,7 @@ export const LockScreen: React.FC<LockScreenProps> = ({ onUnlockSuccess }) => {
             ? setupStep === 'enter'
               ? t('lock.setupPinTitle', { defaultValue: 'Criar PIN de Acesso' })
               : t('lock.confirmPin', { defaultValue: 'Confirmar PIN' })
-            : t('lock.title', { defaultValue: 'WhatsApp Gestor' })}
+            : t('lock.title', { defaultValue: 'SeuGestor' })}
         </Text>
 
         <Text style={[styles.lockSubtitle, { color: tokens.textSecondary }]}>
