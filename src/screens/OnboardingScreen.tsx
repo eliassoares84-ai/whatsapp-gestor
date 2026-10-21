@@ -8,15 +8,10 @@ import {
   Text,
   View,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
-import { useFinanceStore } from '../store/useFinanceStore';
-
-const APP_BG = '#0A0A0A';
-const CARD_BG = '#121212';
-const ACCENT_BLUE = '#0A84FF';
-const ACCENT_GREEN = '#d2ff61';
-const TEXT_PRIMARY = '#FFFFFF';
-const TEXT_SECONDARY = '#999999';
+import { useFinanceStore, useThemeStore } from '../store/useFinanceStore';
+import { getThemeTokens } from '../styles/themes';
 
 type IconName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
 
@@ -24,8 +19,6 @@ type ProfileType = 'personal' | 'business' | 'hybrid';
 
 interface ProfileOption {
   type: ProfileType;
-  title: string;
-  description: string;
   icon: IconName;
   isPopular?: boolean;
 }
@@ -33,29 +26,24 @@ interface ProfileOption {
 const profileOptions: ProfileOption[] = [
   {
     type: 'personal',
-    title: 'Pessoa Física',
-    description: 'Apenas controle pessoal e da casa.',
-    icon: 'account',
+    icon: 'account-outline',
   },
   {
     type: 'business',
-    title: 'Pessoa Jurídica',
-    description: 'Apenas controle da minha empresa/negócio.',
-    icon: 'briefcase',
+    icon: 'briefcase-outline',
   },
   {
     type: 'hybrid',
-    title: 'Híbrido',
-    description: 'Quero separar minhas contas pessoais da minha empresa.',
     icon: 'scale-balance',
     isPopular: true,
   },
 ];
 
 export const OnboardingScreen: React.FC = () => {
-  const [selectedProfile, setSelectedProfile] = useState<ProfileType | null>(
-    null
-  );
+  const { t } = useTranslation();
+  const theme = useThemeStore((state) => state.theme);
+  const tokens = getThemeTokens(theme);
+  const [selectedProfile, setSelectedProfile] = useState<ProfileType | null>(null);
 
   const { setupUserAccount } = useFinanceStore();
 
@@ -68,18 +56,18 @@ export const OnboardingScreen: React.FC = () => {
   };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: APP_BG }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: tokens.background }]}>
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
         {/* Header */}
         <View style={styles.header}>
-          <Text style={[styles.title, { color: TEXT_PRIMARY }]}>
-            Como você vai usar o app?
+          <Text style={[styles.title, { color: tokens.textPrimary }]}>
+            {t('onboarding.title')}
           </Text>
-          <Text style={[styles.subtitle, { color: TEXT_SECONDARY }]}>
-            Escolha o perfil que melhor se adequa às suas necessidades.
+          <Text style={[styles.subtitle, { color: tokens.textSecondary }]}>
+            {t('onboarding.subtitle')}
           </Text>
         </View>
 
@@ -87,54 +75,66 @@ export const OnboardingScreen: React.FC = () => {
         <View style={styles.cardsContainer}>
           {profileOptions.map((option) => {
             const isSelected = selectedProfile === option.type;
-            const borderColor = isSelected ? ACCENT_BLUE : 'transparent';
+            const borderColor = isSelected ? tokens.primary : tokens.border;
 
             return (
               <Pressable
                 key={option.type}
                 onPress={() => setSelectedProfile(option.type)}
-                style={[
+                style={({ pressed }) => [
                   styles.profileCard,
                   {
-                    backgroundColor: CARD_BG,
+                    backgroundColor: tokens.card,
                     borderColor,
-                    borderWidth: isSelected ? 2 : 0,
+                    borderWidth: isSelected ? 1.5 : 1,
+                    opacity: pressed ? 0.88 : 1,
                   },
                 ]}
               >
                 {/* Popular Badge */}
                 {option.isPopular && (
                   <View
-                    style={[styles.popularBadge, { backgroundColor: ACCENT_GREEN }]}
+                    style={[
+                      styles.popularBadge,
+                      {
+                        backgroundColor: tokens.primaryTonal,
+                        borderColor: tokens.primaryTonalBorder,
+                      },
+                    ]}
                   >
-                    <Text style={styles.popularText}>Mais popular</Text>
+                    <Text style={[styles.popularText, { color: tokens.primary }]}>
+                      {t('onboarding.popular')}
+                    </Text>
                   </View>
                 )}
 
-                {/* Icon */}
+                {/* Icon Container */}
                 <View
                   style={[
                     styles.iconContainer,
                     {
                       backgroundColor: isSelected
-                        ? `${ACCENT_BLUE}15`
-                        : `${ACCENT_GREEN}15`,
+                        ? tokens.primaryTonal
+                        : tokens.surfaceInteractive,
+                      borderColor: isSelected
+                        ? tokens.primaryTonalBorder
+                        : tokens.border,
                     },
                   ]}
                 >
                   <MaterialCommunityIcons
                     name={option.icon}
-                    size={40}
-                    color={isSelected ? ACCENT_BLUE : ACCENT_GREEN}
+                    size={30}
+                    color={isSelected ? tokens.primary : tokens.textSecondary}
                   />
                 </View>
 
                 {/* Content */}
-                <Text style={[styles.cardTitle, { color: TEXT_PRIMARY }]}>
-                  {option.title}
+                <Text style={[styles.cardTitle, { color: tokens.textPrimary }]}>
+                  {t(`onboarding.profiles.${option.type}.title`)}
                 </Text>
-                <Text style={[styles.cardDescription, { color: TEXT_SECONDARY }]}>
-                  {option.description}
+                <Text style={[styles.cardDescription, { color: tokens.textSecondary }]}>
+                  {t(`onboarding.profiles.${option.type}.description`)}
                 </Text>
 
                 {/* Selection Indicator */}
@@ -142,7 +142,8 @@ export const OnboardingScreen: React.FC = () => {
                   style={[
                     styles.selectionIndicator,
                     {
-                      borderColor: isSelected ? ACCENT_BLUE : CARD_BG,
+                      borderColor: isSelected ? tokens.primary : tokens.borderStrong,
+                      backgroundColor: isSelected ? tokens.primaryTonal : 'transparent',
                     },
                   ]}
                 >
@@ -150,7 +151,7 @@ export const OnboardingScreen: React.FC = () => {
                     <View
                       style={[
                         styles.selectionDot,
-                        { backgroundColor: ACCENT_BLUE },
+                        { backgroundColor: tokens.primary },
                       ]}
                     />
                   )}
@@ -162,13 +163,13 @@ export const OnboardingScreen: React.FC = () => {
       </ScrollView>
 
       {/* Footer Button */}
-      <View style={styles.footer}>
+      <View style={[styles.footer, { backgroundColor: tokens.background, borderTopColor: tokens.divider }]}>
         <Pressable
-          style={[
+          style={({ pressed }) => [
             styles.startButton,
             {
-              backgroundColor: selectedProfile ? ACCENT_GREEN : CARD_BG,
-              opacity: selectedProfile ? 1 : 0.5,
+              backgroundColor: selectedProfile ? (pressed ? tokens.primaryPressed : tokens.primary) : tokens.surfaceInteractive,
+              borderColor: selectedProfile ? 'transparent' : tokens.border,
             },
           ]}
           onPress={handleStart}
@@ -177,10 +178,10 @@ export const OnboardingScreen: React.FC = () => {
           <Text
             style={[
               styles.startButtonText,
-              { color: selectedProfile ? '#000' : TEXT_SECONDARY },
+              { color: selectedProfile ? '#FFFFFF' : tokens.textTertiary },
             ]}
           >
-            Começar
+            {t('onboarding.start')}
           </Text>
         </Pressable>
       </View>
@@ -194,16 +195,17 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingHorizontal: 20,
-    paddingVertical: 20,
+    paddingVertical: 16,
   },
   header: {
-    marginBottom: 40,
-    marginTop: 20,
+    marginBottom: 28,
+    marginTop: 16,
   },
   title: {
     fontSize: 28,
     fontWeight: '700',
-    marginBottom: 10,
+    letterSpacing: -0.5,
+    marginBottom: 8,
   },
   subtitle: {
     fontSize: 15,
@@ -212,7 +214,7 @@ const styles = StyleSheet.create({
   },
   cardsContainer: {
     gap: 16,
-    marginBottom: 40,
+    marginBottom: 24,
   },
   profileCard: {
     borderRadius: 20,
@@ -222,62 +224,68 @@ const styles = StyleSheet.create({
   },
   popularBadge: {
     position: 'absolute',
-    top: 12,
-    right: 12,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 8,
+    top: 16,
+    right: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 12,
+    borderWidth: 1,
   },
   popularText: {
     fontSize: 11,
     fontWeight: '700',
-    color: '#000',
+    letterSpacing: 0.2,
   },
   iconContainer: {
-    width: 60,
-    height: 60,
-    borderRadius: 16,
+    width: 52,
+    height: 52,
+    borderRadius: 14,
+    borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 14,
+    marginBottom: 16,
   },
   cardTitle: {
     fontSize: 18,
     fontWeight: '700',
     marginBottom: 6,
+    letterSpacing: -0.2,
   },
   cardDescription: {
     fontSize: 14,
     fontWeight: '400',
     lineHeight: 20,
-    marginBottom: 14,
+    marginBottom: 16,
   },
   selectionIndicator: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    borderWidth: 2,
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    borderWidth: 1.5,
     justifyContent: 'center',
     alignItems: 'center',
   },
   selectionDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
+    width: 10,
+    height: 10,
+    borderRadius: 5,
   },
   footer: {
     paddingHorizontal: 20,
-    paddingBottom: 24,
+    paddingBottom: 20,
     paddingTop: 12,
+    borderTopWidth: 1,
   },
   startButton: {
-    height: 54,
-    borderRadius: 12,
+    height: 52,
+    borderRadius: 14,
+    borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   startButtonText: {
     fontSize: 16,
     fontWeight: '700',
+    letterSpacing: 0.2,
   },
 });

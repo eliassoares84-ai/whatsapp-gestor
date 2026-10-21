@@ -31,3 +31,30 @@ Você é um engenheiro de software especialista em React Native, Expo e TypeScri
 - Não utilize bibliotecas de terceiros para gráficos sem aprovação. Monte os gráficos usando componentes nativos do React Native (`View` estilizadas para barras/sparklines).
 - Garanta que todas as labels passem pelo hook `useTranslation()`.
 - Respeite a separação de pastas: `/src/screens`, `/src/components`, `/src/store`, `/src/utils`, `/src/types`.
+- Evite qualquer lógica de negócios diretamente nos componentes. Use funções utilitárias ou o store para isso.
+- Mantenha o código limpo, com comentários explicativos apenas onde necessário. Evite comentários óbvios.
+- Use TypeScript rigorosamente, definindo tipos para estados, props e funções.
+- Implemente testes unitários para as funções de manipulação de transações e parsing de comandos de voz.
+- O código deve ser modular, reutilizável e fácil de manter, seguindo as melhores práticas de desenvolvimento React Native e TypeScript.
+- Execute alterações de funcionalidade ou correção de bugs sem comprometer a estrutura e a qualidade do código existente, sem alterar a configuração, aparência ou comportamento esperado do aplicativo, faça apenas quando solicitado.
+
+## 6. Entrega
+- O código deve ser entregue em um repositório GitHub privado, com commits claros e descritivos.
+- Inclua um README.md detalhado explicando a estrutura do projeto, como rodar o aplicativo e como executar os testes.
+- Certifique-se de que o aplicativo esteja funcional e sem erros antes da entrega final.
+- O prazo para entrega é de 4 semanas a partir da data de início do projeto.
+
+## 7. Comunicação
+- Mantenha uma comunicação clara e regular com a equipe, fornecendo atualizações de progresso e solicitando feedback quando necessário.
+- Use ferramentas de comunicação designadas (ex: Slack, email) para discussões relacionadas ao projeto.
+- Documente quaisquer decisões importantes ou mudanças de escopo no repositório para referência futura. 
+- Esteja aberto a revisões de código e feedback construtivo para garantir a qualidade do produto final.
+- Priorize a colaboração e o trabalho em equipe para alcançar os melhores resultados possíveis.
+
+## 8. Manutenção e Suporte
+- Após a entrega, esteja disponível para corrigir quaisquer bugs ou problemas que possam surgir durante o uso do aplicativo.
+- Forneça suporte para atualizações futuras, incluindo melhorias de funcionalidade e adaptações as mudanças nas dependências ou no ambiente de desenvolvimento.
+- Documente claramente o processo de manutenção e suporte para garantir que a equipe possa continuar a desenvolver o aplicativo de forma eficaz após a entrega inicial.
+- Considere a implementação de um sistema de feedback dentro do aplicativo para que os usuários possam reportar problemas ou sugerir melhorias diretamente.
+- Mantenha o código atualizado com as melhores práticas e padrões de desenvolvimento para garantir a longevidade e a escalabilidade do aplicativo.
+

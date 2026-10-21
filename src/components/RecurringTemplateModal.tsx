@@ -1,15 +1,22 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
+  KeyboardAvoidingView,
   Modal,
+  Platform,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   View,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { CurrencyInput } from './CurrencyInput';
 import type { RecurringTemplate } from '../types/finance.types';
+import { uppercaseFirstLetter } from '../utils/textInputFormat';
 
 const APP_BG = '#0A0A0A';
 const CARD_BG = '#121212';
@@ -30,17 +37,6 @@ interface RecurringTemplateModalProps {
   onSave: (payload: TemplatePayload, templateId?: string) => void;
 }
 
-const frequencyOptions: Array<{ label: string; value: Frequency }> = [
-  { label: 'Semanal', value: 'weekly' },
-  { label: 'Mensal', value: 'monthly' },
-  { label: 'Anual', value: 'yearly' },
-];
-
-const typeOptions: Array<{ label: string; value: 'income' | 'expense' }> = [
-  { label: 'Receita', value: 'income' },
-  { label: 'Despesa', value: 'expense' },
-];
-
 export const RecurringTemplateModal: React.FC<RecurringTemplateModalProps> = ({
   visible,
   accentColor,
@@ -48,8 +44,10 @@ export const RecurringTemplateModal: React.FC<RecurringTemplateModalProps> = ({
   onClose,
   onSave,
 }) => {
+  const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
   const [description, setDescription] = useState('');
-  const [amountText, setAmountText] = useState('');
+  const [amountValue, setAmountValue] = useState(0);
   const [type, setType] = useState<'income' | 'expense'>('expense');
   const [frequency, setFrequency] = useState<Frequency>('monthly');
   const [dayOfMonthText, setDayOfMonthText] = useState('10');
@@ -57,7 +55,7 @@ export const RecurringTemplateModal: React.FC<RecurringTemplateModalProps> = ({
   useEffect(() => {
     if (!visible) {
       setDescription('');
-      setAmountText('');
+      setAmountValue(0);
       setType('expense');
       setFrequency('monthly');
       setDayOfMonthText('10');
@@ -66,18 +64,17 @@ export const RecurringTemplateModal: React.FC<RecurringTemplateModalProps> = ({
 
     if (templateToEdit) {
       setDescription(templateToEdit.note);
-      setAmountText(templateToEdit.amount.toString().replace('.', ','));
+      setAmountValue(templateToEdit.amount);
       setType(templateToEdit.type === 'income' ? 'income' : 'expense');
       setFrequency(templateToEdit.frequency);
       setDayOfMonthText(templateToEdit.dayOfMonth.toString());
     }
   }, [visible, templateToEdit]);
 
-  const parsedAmount = useMemo(() => {
-    const normalized = amountText.replace(',', '.');
-    const amount = Number.parseFloat(normalized);
-    return Number.isFinite(amount) ? amount : NaN;
-  }, [amountText]);
+  const parsedAmount = useMemo(
+    () => (Number.isFinite(amountValue) ? amountValue : NaN),
+    [amountValue]
+  );
 
   const parsedDay = useMemo(() => {
     const day = Number.parseInt(dayOfMonthText, 10);
@@ -89,6 +86,17 @@ export const RecurringTemplateModal: React.FC<RecurringTemplateModalProps> = ({
   }, [dayOfMonthText]);
 
   const canSave = description.trim().length > 0 && Number.isFinite(parsedAmount) && parsedAmount > 0;
+
+  const frequencyOptions: Array<{ label: string; value: Frequency }> = [
+    { label: t('recurringModal.frequency.weekly'), value: 'weekly' },
+    { label: t('recurringModal.frequency.monthly'), value: 'monthly' },
+    { label: t('recurringModal.frequency.yearly'), value: 'yearly' },
+  ];
+
+  const typeOptions: Array<{ label: string; value: 'income' | 'expense' }> = [
+    { label: t('recurringModal.type.income'), value: 'income' },
+    { label: t('recurringModal.type.expense'), value: 'expense' },
+  ];
 
   const handleSave = () => {
     if (!canSave) {
@@ -115,114 +123,126 @@ export const RecurringTemplateModal: React.FC<RecurringTemplateModalProps> = ({
   return (
     <Modal transparent visible={visible} animationType="slide" onRequestClose={onClose}>
       <View style={styles.overlay}>
-        <View style={[styles.container, { backgroundColor: CARD_BG }]}> 
-          <View style={styles.header}>
-            <Text style={[styles.title, { color: TEXT_PRIMARY }]}>
-              {templateToEdit ? 'Editar Conta Fixa' : 'Nova Conta Fixa'}
-            </Text>
-            <Pressable onPress={onClose}>
-              <MaterialCommunityIcons name="close" size={24} color={TEXT_SECONDARY} />
-            </Pressable>
-          </View>
-
-          <View style={styles.fieldBlock}>
-            <Text style={[styles.label, { color: TEXT_PRIMARY }]}>Descricao</Text>
-            <TextInput
-              value={description}
-              onChangeText={setDescription}
-              placeholder="O que e isso?"
-              placeholderTextColor={TEXT_SECONDARY}
-              style={[styles.input, { color: TEXT_PRIMARY, borderColor: accentColor, backgroundColor: APP_BG }]}
-            />
-          </View>
-
-          <View style={styles.fieldBlock}>
-            <Text style={[styles.label, { color: TEXT_PRIMARY }]}>Valor</Text>
-            <TextInput
-              value={amountText}
-              onChangeText={setAmountText}
-              placeholder="0,00"
-              placeholderTextColor={TEXT_SECONDARY}
-              keyboardType="numeric"
-              style={[styles.input, { color: TEXT_PRIMARY, borderColor: accentColor, backgroundColor: APP_BG }]}
-            />
-          </View>
-
-          <View style={styles.fieldBlock}>
-            <Text style={[styles.label, { color: TEXT_PRIMARY }]}>Tipo</Text>
-            <View style={styles.optionRow}>
-              {typeOptions.map((option) => {
-                const selected = option.value === type;
-                return (
-                  <Pressable
-                    key={option.value}
-                    onPress={() => setType(option.value)}
-                    style={[
-                      styles.optionButton,
-                      {
-                        borderColor: selected ? accentColor : 'rgba(255, 255, 255, 0.15)',
-                        backgroundColor: selected ? `${accentColor}22` : 'transparent',
-                      },
-                    ]}
-                  >
-                    <Text style={{ color: selected ? accentColor : TEXT_SECONDARY, fontWeight: '600' }}>
-                      {option.label}
-                    </Text>
-                  </Pressable>
-                );
-              })}
+        <KeyboardAvoidingView
+          style={styles.keyboardAvoiding}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={insets.bottom + 8}
+        >
+          <View style={[styles.container, { backgroundColor: CARD_BG }]}> 
+            <View style={styles.header}>
+              <Text style={[styles.title, { color: TEXT_PRIMARY }]}>
+                {templateToEdit ? t('recurringModal.editTitle') : t('recurringModal.createTitle')}
+              </Text>
+              <Pressable onPress={onClose}>
+                <MaterialCommunityIcons name="close" size={24} color={TEXT_SECONDARY} />
+              </Pressable>
             </View>
-          </View>
 
-          <View style={styles.fieldBlock}>
-            <Text style={[styles.label, { color: TEXT_PRIMARY }]}>Frequencia</Text>
-            <View style={styles.optionRow}>
-              {frequencyOptions.map((option) => {
-                const selected = option.value === frequency;
-                return (
-                  <Pressable
-                    key={option.value}
-                    onPress={() => setFrequency(option.value)}
-                    style={[
-                      styles.optionButton,
-                      {
-                        borderColor: selected ? accentColor : 'rgba(255, 255, 255, 0.15)',
-                        backgroundColor: selected ? `${accentColor}22` : 'transparent',
-                      },
-                    ]}
-                  >
-                    <Text style={{ color: selected ? accentColor : TEXT_SECONDARY, fontWeight: '600' }}>
-                      {option.label}
-                    </Text>
-                  </Pressable>
-                );
-              })}
-            </View>
-          </View>
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              keyboardShouldPersistTaps="handled"
+              contentContainerStyle={styles.formContent}
+            >
+              <View style={styles.fieldBlock}>
+                <Text style={[styles.label, { color: TEXT_PRIMARY }]}>{t('recurringModal.description')}</Text>
+                <TextInput
+                  value={description}
+                  onChangeText={(value) => setDescription(uppercaseFirstLetter(value))}
+                  placeholder={t('recurringModal.descriptionPlaceholder')}
+                  placeholderTextColor={TEXT_SECONDARY}
+                  autoCapitalize="sentences"
+                  style={[styles.input, { color: TEXT_PRIMARY, borderColor: accentColor, backgroundColor: APP_BG }]}
+                />
+              </View>
 
-          <View style={styles.fieldBlock}>
-            <Text style={[styles.label, { color: TEXT_PRIMARY }]}>Dia do Mes (1 a 31)</Text>
-            <TextInput
-              value={dayOfMonthText}
-              onChangeText={setDayOfMonthText}
-              keyboardType="number-pad"
-              style={[styles.input, { color: TEXT_PRIMARY, borderColor: accentColor, backgroundColor: APP_BG }]}
-            />
-          </View>
+              <View style={styles.fieldBlock}>
+                <Text style={[styles.label, { color: TEXT_PRIMARY }]}>{t('recurringModal.amount')}</Text>
+                <CurrencyInput
+                  value={amountValue}
+                  onChangeValue={setAmountValue}
+                  placeholder="0,00"
+                  placeholderTextColor={TEXT_SECONDARY}
+                  style={[styles.input, { color: TEXT_PRIMARY, borderColor: accentColor, backgroundColor: APP_BG }]}
+                />
+              </View>
 
-          <Pressable
-            onPress={handleSave}
-            disabled={!canSave}
-            style={[
-              styles.saveButton,
-              { backgroundColor: canSave ? accentColor : '#3A3A3A' },
-            ]}
-          >
-            <Text style={[styles.saveText, { color: '#000000' }]}>
-              {templateToEdit ? 'Salvar Alteracoes' : 'Salvar Agendamento'}
-            </Text>
-          </Pressable>
-        </View>
+              <View style={styles.fieldBlock}>
+                <Text style={[styles.label, { color: TEXT_PRIMARY }]}>{t('recurringModal.typeLabel')}</Text>
+                <View style={styles.optionRow}>
+                  {typeOptions.map((option) => {
+                    const selected = option.value === type;
+                    return (
+                      <Pressable
+                        key={option.value}
+                        onPress={() => setType(option.value)}
+                        style={[
+                          styles.optionButton,
+                          {
+                            borderColor: selected ? accentColor : 'rgba(255, 255, 255, 0.15)',
+                            backgroundColor: selected ? `${accentColor}22` : 'transparent',
+                          },
+                        ]}
+                      >
+                        <Text style={{ color: selected ? accentColor : TEXT_SECONDARY, fontWeight: '600' }}>
+                          {option.label}
+                        </Text>
+                      </Pressable>
+                    );
+                  })}
+                </View>
+              </View>
+
+              <View style={styles.fieldBlock}>
+                <Text style={[styles.label, { color: TEXT_PRIMARY }]}>{t('recurringModal.frequencyLabel')}</Text>
+                <View style={styles.optionRow}>
+                  {frequencyOptions.map((option) => {
+                    const selected = option.value === frequency;
+                    return (
+                      <Pressable
+                        key={option.value}
+                        onPress={() => setFrequency(option.value)}
+                        style={[
+                          styles.optionButton,
+                          {
+                            borderColor: selected ? accentColor : 'rgba(255, 255, 255, 0.15)',
+                            backgroundColor: selected ? `${accentColor}22` : 'transparent',
+                          },
+                        ]}
+                      >
+                        <Text style={{ color: selected ? accentColor : TEXT_SECONDARY, fontWeight: '600' }}>
+                          {option.label}
+                        </Text>
+                      </Pressable>
+                    );
+                  })}
+                </View>
+              </View>
+
+              <View style={styles.fieldBlock}>
+                <Text style={[styles.label, { color: TEXT_PRIMARY }]}>{t('recurringModal.dayOfMonth')}</Text>
+                <TextInput
+                  value={dayOfMonthText}
+                  onChangeText={setDayOfMonthText}
+                  keyboardType="number-pad"
+                  style={[styles.input, { color: TEXT_PRIMARY, borderColor: accentColor, backgroundColor: APP_BG }]}
+                />
+              </View>
+
+              <Pressable
+                onPress={handleSave}
+                disabled={!canSave}
+                style={[
+                  styles.saveButton,
+                  { backgroundColor: canSave ? accentColor : '#3A3A3A' },
+                ]}
+              >
+                <Text style={[styles.saveText, { color: '#000000' }]}>
+                  {templateToEdit ? t('recurringModal.saveChanges') : t('recurringModal.saveSchedule')}
+                </Text>
+              </Pressable>
+            </ScrollView>
+          </View>
+        </KeyboardAvoidingView>
       </View>
     </Modal>
   );
@@ -234,6 +254,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     backgroundColor: 'rgba(0, 0, 0, 0.65)',
   },
+  keyboardAvoiding: {
+    width: '100%',
+  },
   container: {
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
@@ -241,6 +264,10 @@ const styles = StyleSheet.create({
     paddingTop: 18,
     paddingBottom: 28,
     gap: 12,
+  },
+  formContent: {
+    gap: 12,
+    paddingBottom: 8,
   },
   header: {
     flexDirection: 'row',

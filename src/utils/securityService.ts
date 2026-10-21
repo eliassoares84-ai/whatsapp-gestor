@@ -1,18 +1,96 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Crypto from 'expo-crypto';
 import * as LocalAuthentication from 'expo-local-authentication';
 
-export const authenticateUser = async (): Promise<boolean> => {
+export const STORAGE_KEY_PIN_HASH = '@whatsapp_gestor_pin_hash';
+
+export interface AuthPromptLabels {
+  promptMessage: string;
+  cancelLabel: string;
+  fallbackLabel: string;
+}
+
+export interface BiometricsStatus {
+  hasHardware: boolean;
+  isEnrolled: boolean;
+}
+
+export const isBiometricsAvailable = async (): Promise<BiometricsStatus> => {
   try {
     const hasHardware = await LocalAuthentication.hasHardwareAsync();
     const isEnrolled = await LocalAuthentication.isEnrolledAsync();
+    return { hasHardware, isEnrolled };
+  } catch {
+    return { hasHardware: false, isEnrolled: false };
+  }
+};
 
-    if (!hasHardware && !isEnrolled) {
+export const hasAppPin = async (): Promise<boolean> => {
+  try {
+    const hash = await AsyncStorage.getItem(STORAGE_KEY_PIN_HASH);
+    return Boolean(hash && hash.trim().length > 0);
+  } catch {
+    return false;
+  }
+};
+
+export const hashPin = async (pin: string): Promise<string> => {
+  return await Crypto.digestStringAsync(
+    Crypto.CryptoDigestAlgorithm.SHA256,
+    `whatsapp_gestor_salt_${pin.trim()}`
+  );
+};
+
+export const setAppPin = async (pin: string): Promise<boolean> => {
+  try {
+    const cleanPin = pin.trim();
+    if (cleanPin.length < 4) {
+      return false;
+    }
+    const hash = await hashPin(cleanPin);
+    await AsyncStorage.setItem(STORAGE_KEY_PIN_HASH, hash);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+export const verifyAppPin = async (pin: string): Promise<boolean> => {
+  try {
+    const storedHash = await AsyncStorage.getItem(STORAGE_KEY_PIN_HASH);
+    if (!storedHash) {
+      return false;
+    }
+    const inputHash = await hashPin(pin);
+    return storedHash === inputHash;
+  } catch {
+    return false;
+  }
+};
+
+export const removeAppPin = async (): Promise<boolean> => {
+  try {
+    await AsyncStorage.removeItem(STORAGE_KEY_PIN_HASH);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+export const authenticateBiometrics = async (
+  labels?: AuthPromptLabels
+): Promise<boolean> => {
+  try {
+    const { hasHardware, isEnrolled } = await isBiometricsAvailable();
+
+    if (!hasHardware || !isEnrolled) {
       return false;
     }
 
     const result = await LocalAuthentication.authenticateAsync({
-      promptMessage: 'Desbloquear acesso ao app',
-      cancelLabel: 'Cancelar',
-      fallbackLabel: 'Usar senha do dispositivo',
+      promptMessage: labels?.promptMessage || 'Desbloquear WhatsApp Gestor',
+      cancelLabel: labels?.cancelLabel || 'Cancelar',
+      fallbackLabel: labels?.fallbackLabel || 'Usar PIN ou senha',
       biometricsSecurityLevel: 'weak',
       disableDeviceFallback: false,
     });
@@ -21,4 +99,10 @@ export const authenticateUser = async (): Promise<boolean> => {
   } catch {
     return false;
   }
+};
+
+export const authenticateUser = async (
+  labels?: AuthPromptLabels
+): Promise<boolean> => {
+  return authenticateBiometrics(labels);
 };

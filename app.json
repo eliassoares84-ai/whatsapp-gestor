@@ -1,10 +1,45 @@
 {
-  "plugins": [
-    "expo-speech-recognition"
-  ],
-  "extra": {
-    "eas": {
-      "projectId": "0275be31-bc72-4558-9f8d-809e4b59eac4"
+  "expo": {
+    "name": "SeuGestor",
+    "slug": "whatsapp-gestor",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "scheme": "meugestor",
+    "icon": "./assets/icon.png",
+    "plugins": [
+      "@react-native-google-signin/google-signin",
+      "expo-speech-recognition",
+      "expo-web-browser",
+      "expo-localization",
+      "expo-notifications",
+      "expo-font"
+    ],
+    "android": {
+      "permissions": [
+        "RECORD_AUDIO",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.eliasbusatto.whatsappgestor",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#0A0A0A"
+      }
+    },
+    "ios": {
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "fetch"
+        ]
+      }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "0275be31-bc72-4558-9f8d-809e4b59eac4"
+      },
+      "EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID": "822719331832-mscfrmdbep64tlphcjimpj8qsj7s3ha5.apps.googleusercontent.com",
+      "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "SEU_IOS_CLIENT_ID",
+      "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "822719331832-iegd6fmoom73cjvtgda123ar97m4e9e3.apps.googleusercontent.com"
     }
   }
 }

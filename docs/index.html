@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SeuGestor - Política de Privacidade e Termos de Uso</title>
+  <meta name="description" content="Política de Privacidade e Termos de Uso do aplicativo SeuGestor. Em estrita conformidade com a LGPD, GDPR e políticas do Google Play.">
+  <meta name="robots" content="index, follow">
+  <style>
+    :root {
+      --bg: #080B0F;
+      --bg-elevated: #0D1117;
+      --card: #111720;
+      --surface-interactive: #171E28;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.14);
+      --text-primary: #F5F7FA;
+      --text-secondary: #98A2B3;
+      --text-tertiary: #667085;
+      --primary: #2997FF;
+      --primary-tonal: rgba(41, 151, 255, 0.12);
+      --primary-border: rgba(41, 151, 255, 0.24);
+      --positive: #32D583;
+      --positive-tonal: rgba(50, 213, 131, 0.12);
+      --positive-border: rgba(50, 213, 131, 0.24);
+      --warning: #FDB022;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-primary);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.65;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: 60px;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 32px 20px;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 24px;
+      margin-bottom: 32px;
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .brand-title {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .badge-pro {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--primary);
+      background-color: var(--primary-tonal);
+      border: 1px solid var(--primary-border);
+      padding: 4px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-compliance {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--positive);
+      background-color: var(--positive-tonal);
+      border: 1px solid var(--positive-border);
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+
+    .tab-bar {
+      display: flex;
+      gap: 8px;
+      background: var(--bg-elevated);
+      padding: 6px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      margin-bottom: 24px;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .tab-btn.active {
+      background: var(--primary-tonal);
+      color: var(--primary);
+      border: 1px solid var(--primary-border);
+    }
+
+    .lang-selector {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 24px;
+    }
+
+    .lang-btn {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .lang-btn.active {
+      background: var(--surface-interactive);
+      color: var(--text-primary);
+      border-color: var(--border-strong);
+    }
+
+    .meta-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 32px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .meta-item strong {
+      display: block;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-tertiary);
+      margin-bottom: 4px;
+    }
+
+    .meta-item span {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .highlight-card {
+      background: var(--primary-tonal);
+      border: 1px solid var(--primary-border);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 24px;
+    }
+
+    .highlight-card h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .highlight-card p {
+      font-size: 14px;
+      color: var(--text-primary);
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-top: 36px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+
+    h3 {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-top: 20px;
+      margin-bottom: 8px;
+    }
+
+    p, ul, ol {
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+      font-size: 15px;
+    }
+
+    ul, ol {
+      padding-left: 24px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    strong {
+      color: var(--text-primary);
+    }
+
+    .contact-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .contact-box h3 {
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+
+    .contact-box a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .contact-box a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 48px;
+      font-size: 13px;
+      color: var(--text-tertiary);
+    }
+
+    .lang-section {
+      display: none;
+    }
+
+    .lang-section.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand-row">
+        <div class="brand-title">
+          <span>SeuGestor</span>
+          <span class="badge-pro">MOBILE APP</span>
+        </div>
+        <div class="badge-compliance">Conforme LGPD • GDPR • Google Play</div>
+      </div>
+      <p style="color: var(--text-secondary); font-size: 14px;">
+        Documento oficial de Governança de Dados, Privacidade e Termos de Serviço.
+      </p>
+    </header>
+
+    <!-- Seletor de Idioma -->
+    <div class="lang-selector">
+      <button class="lang-btn active" onclick="switchLang('pt')">Português (BR)</button>
+      <button class="lang-btn" onclick="switchLang('en')">English (US)</button>
+      <button class="lang-btn" onclick="switchLang('es')">Español (ES)</button>
+    </div>
+
+    <!-- Seletor de Documento -->
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchDoc('privacy')">Política de Privacidade</button>
+      <button class="tab-btn" onclick="switchDoc('terms')">Termos de Uso</button>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- IDIOMA: PORTUGUÊS (BR)                     -->
+    <!-- ========================================== -->
+    <div id="content-pt" class="lang-section active">
+      <!-- Metadados -->
+      <div class="meta-box">
+        <div class="meta-item">
+          <strong>Aplicativo</strong>
+          <span>SeuGestor</span>
+        </div>
+        <div class="meta-item">
+          <strong>Desenvolvedor Responsável</strong>
+          <span>Elias Busatto</span>
+        </div>
+        <div class="meta-item">
+          <strong>Última Atualização</strong>
+          <span>21 de Outubro de 2026</span>
+        </div>
+        <div class="meta-item">
+          <strong>Contato / DPO</strong>
+          <span>feedback.whatsappgestor@gmail.com</span>
+        </div>
+      </div>
+
+      <!-- ABA: POLÍTICA DE PRIVACIDADE PT -->
+      <div id="pt-privacy" class="doc-section">
+        <div class="highlight-card">
+          <h3>Compromisso de Zero Anúncios &amp; Privacidade por Design</h3>
+          <p>
+            O SeuGestor adota uma arquitetura em que suas informações financeiras residem exclusivamente no seu próprio dispositivo sob criptografia. Nenhuma versão possui anúncios comerciais ou rastreadores de publicidade de terceiros.
+          </p>
+        </div>
+
+        <h2>1. Introdução e Enquadramento Legal</h2>
+        <p>
+          Esta Política de Privacidade estabelece as diretrizes de tratamento, armazenamento e segurança de dados do aplicativo móvel <strong>SeuGestor</strong>, em estrita conformidade com a <strong>Lei Geral de Proteção de Dados (LGPD - Lei nº 13.709/2018)</strong>, com o <strong>Regulamento Geral de Proteção de Dados da União Europeia (GDPR)</strong> e com as <strong>Políticas de Dados do Desenvolvedor do Google Play</strong>.
+        </p>
+
+        <h2>2. Dados Coletados e Formas de Tratamento</h2>
+        <p>Dividimos o tratamento de dados em categorias claras e transparentes:</p>
+        <ul>
+          <li>
+            <strong>Registros Financeiros Locais e Múltiplos Workspaces:</strong> Lançamentos de receitas, despesas, faturas de cartão de crédito, contas bancárias, categorias e múltiplos ambientes de gestão (ex: Finanças Pessoais e Meu Negócio). <em>Estes dados são gerados pelo próprio usuário e permanecem armazenados 100% localmente no armazenamento protegido e isolado do dispositivo (sandboxed database).</em>
+          </li>
+          <li>
+            <strong>Cartões de Crédito e Faturas:</strong> O usuário pode cadastrar limites, apelidos e datas de fechamento/vencimento de faturas para fins de planejamento financeiro. <strong>O aplicativo NÃO solicita, NÃO armazena e NÃO processa números completos de cartão de crédito, códigos de segurança (CVV/CVC) ou senhas bancárias.</strong>
+          </li>
+          <li>
+            <strong>Dados de Áudio e Microfone (Permissão RECORD_AUDIO):</strong> Quando o usuário aciona voluntariamente o microfone no lançamento por voz, o áudio é capturado pontualmente apenas durante a fala. O áudio é transcrito em texto no dispositivo e enviado via canal criptografado à API do Google Gemini para inferir o valor, categoria e data da despesa. <strong>O aplicativo não grava conversas em segundo plano e nenhum arquivo de áudio é mantido permanentemente em servidores externos.</strong>
+          </li>
+          <li>
+            <strong>Atalhos do Sistema e Google Assistente (App Actions):</strong> O aplicativo disponibiliza atalhos rápidos do Android e integração com comandos de voz do Google Assistente / Gemini. Apenas os parâmetros deliberadamente ditados pelo usuário (ex: valor e categoria de uma despesa) são recebidos para preenchimento do formulário local. Não há monitoramento contínuo de voz ou escuta passiva.
+          </li>
+          <li>
+            <strong>Conta Google (Google Sign-In) e Perfil:</strong> Ao optar voluntariamente pelo login com a Google, coletamos apenas nome, e-mail e foto de perfil estritamente para identificação de perfil no app e sincronização opcional de backup na nuvem privada.
+          </li>
+          <li>
+            <strong>Autenticação Biométrica e PIN de Acesso:</strong> O usuário pode proteger o acesso ao app com biometria (impressão digital ou Face ID) e PIN de 4 dígitos. A autenticação biométrica é processada <em>exclusivamente</em> pelo subsistema de hardware seguro do sistema operacional (Android BiometricPrompt / KeyStore). <strong>O aplicativo não tem acesso nem armazena impressões digitais ou feições faciais.</strong> O PIN de 4 dígitos é armazenado localmente na forma de hash criptográfico irreversível (SHA-256).
+          </li>
+        </ul>
+
+        <h2>3. Integração com Google Drive API &amp; Auto-Backup Noturno</h2>
+        <p>
+          O SeuGestor permite ao usuário realizar backup em nuvem opcional utilizando o escopo restrito <code>https://www.googleapis.com/auth/drive.appdata</code> da <strong>Google Drive API</strong>.
+        </p>
+        <p>
+          <strong>Uso Restrito e Isolado:</strong> O aplicativo armazena apenas arquivos de backup criptografados na pasta oculta específica do aplicativo (AppData Folder). O SeuGestor <strong>não tem acesso, não lê, não modifica e não exclui</strong> fotos, pastas, planilhas ou quaisquer outros arquivos presentes no Google Drive do usuário.
+        </p>
+        <p>
+          <strong>Rotina de Backup Automático Noturno:</strong> Caso o usuário ative voluntariamente o backup noturno, o aplicativo agenda uma tarefa em segundo plano através do Android WorkManager para ser executada no horário configurado durante a madrugada. Essa tarefa tem a finalidade exclusiva de gerar o arquivo criptografado e sincronizá-lo com a pasta privada do Google Drive do usuário.
+        </p>
+        <p>
+          O uso de informações recebidas das APIs do Google pelo SeuGestor cumpre integralmente a <strong>Política de Dados do Usuário dos Serviços de API do Google</strong>, incluindo os requisitos de <em>Uso Limitado (Limited Use)</em>.
+        </p>
+
+        <h2>4. Processamento de Inteligência Artificial (Google Gemini API)</h2>
+        <p>
+          O aplicativo conecta-se à API corporativa do Google Gemini para alimentar duas funções exclusivas da versão PRO:
+        </p>
+        <ol>
+          <li><strong>Comando de Voz por IA:</strong> Extração automatizada de entidades (valor, forma de pagamento, categoria).</li>
+          <li><strong>Consultor Financeiro CFP® por IA:</strong> Orientação e cálculos consultivos em finanças pessoais e empresariais.</li>
+        </ol>
+        <p>
+          <strong>Garantia de Não Treinamento:</strong> Conforme os Termos de Serviço Empresariais da API do Google Gemini (Enterprise Terms), os dados das conversas e transações dos usuários do SeuGestor <strong>não são usados para treinar ou aperfeiçoar modelos públicos de inteligência artificial da Google</strong> ou de terceiros.
+        </p>
+
+        <h2>5. Pagamentos e Assinaturas (Google Play Billing)</h2>
+        <p>
+          O SeuGestor oferece planos de assinatura PRO (Mensal e Anual). Todas as transações financeiras e dados de cartões de crédito são processados diretamente e exclusivamente pelo sistema seguro de cobrança do <strong>Google Play Billing</strong>. O SeuGestor não armazena, não processa e não tem acesso aos números de cartão de crédito ou dados bancários de pagamento do usuário.
+        </p>
+
+        <h2>6. Segurança, Criptografia e Modo Privacidade</h2>
+        <p>Implementamos salvaguardas técnicas robustas:</p>
+        <ul>
+          <li><strong>Criptografia em Repouso:</strong> Bancos de dados locais e backups são protegidos por algoritmos de criptografia de nível bancário (AES-256).</li>
+          <li><strong>Segurança Biométrica / PIN Local:</strong> Bloqueio local opcional com validação delegada ao enclave seguro do Android.</li>
+          <li><strong>Modo Privacidade Nativo:</strong> Ocultação preventiva de saldos na tela para evitar visualização indevida por terceiros em ambientes públicos.</li>
+        </ul>
+
+        <h2>7. Direitos do Titular de Dados e Exclusão Total (LGPD Art. 18)</h2>
+        <p>
+          O usuário é o proprietário soberano dos seus dados. Garantimos o exercício irrestrito de todos os direitos previstos na LGPD e no GDPR:
+        </p>
+        <ul>
+          <li><strong>Exportação e Portabilidade:</strong> O usuário pode exportar seus dados a qualquer momento em formato CSV ou JSON pelas configurações.</li>
+          <li><strong>Direito ao Esquecimento ("Apagar Todos os Dados"):</strong> Disponibilizamos nas Configurações do app a rotina destrutiva imediata que apaga irreversivelmente todas as transações, contas, preferências e chaves do aparelho celular.</li>
+          <li><strong>Desconexão de Conta Google:</strong> O vínculo com a conta Google pode ser revogado a qualquer momento com um único toque nas Configurações.</li>
+        </ul>
+
+        <h2>8. Ausência de Compartilhamento com Terceiros</h2>
+        <p>
+          O SeuGestor <strong>não vende, não aluga e não compartilha</strong> dados financeiros ou cadastrais com seguradoras, bancos, corretoras, anunciantes ou birôs de crédito.
+        </p>
+      </div>
+
+      <!-- ABA: TERMOS DE USO PT -->
+      <div id="pt-terms" class="doc-section" style="display: none;">
+        <h2>1. Aceitação dos Termos</h2>
+        <p>
+          Ao instalar e utilizar o aplicativo SeuGestor, você concorda com estes Termos de Uso. Caso não concorde, recomendamos a desinstalação imediata do aplicativo.
+        </p>
+
+        <h2>2. Descrição dos Serviços e Planos</h2>
+        <p>
+          O SeuGestor é um gerenciador de finanças pessoais móvel disponível em duas modalidades:
+        </p>
+        <ul>
+          <li><strong>Versão Gratuita (100% Sem Anúncios):</strong> Acesso completo a lançamentos manuais, extrato, contas correntes, cartões de crédito, relatórios DRE e backup em nuvem via Google Drive.</li>
+          <li><strong>Versão PRO:</strong> Desbloqueio dos recursos de Inteligência Artificial: Comando de Voz inteligente e Consultor Financeiro CFP® 24/7.</li>
+        </ul>
+
+        <h2>3. Natureza Consultiva Educacional do Consultor CFP® por IA</h2>
+        <div class="highlight-card">
+          <h3>Aviso Legal de Isenção Financeira</h3>
+          <p>
+            As orientações, respostas e simulações prestadas pelo Consultor Financeiro CFP® por IA têm caráter exclusivamente <strong>educativo, analítico e informativo</strong>. Elas não constituem recomendação oficial de investimento individualizado, consultoria de valores mobiliários (CVM), auditoria tributária ou compromisso de contratação de crédito. Decisões de investimento e contratação devem ser avaliadas com os respectivos profissionais certificados e instituições financeiras autorizadas pelo Banco Central.
+          </p>
+        </div>
+
+        <h2>4. Assinaturas, Renovação e Cancelamento</h2>
+        <p>
+          As assinaturas do SeuGestor PRO são gerenciadas diretamente pela sua conta da Google Play Store. A renovação ocorre de forma automática ao término de cada período (mensal ou anual), a menos que o cancelamento seja solicitado pelo usuário nas configurações de assinaturas da Google Play com pelo menos 24 horas de antecedência.
+        </p>
+
+        <h2>5. Legislação Aplicável e Foro</h2>
+        <p>
+          Estes termos são regidos pelas leis da República Federativa do Brasil. Para dirimir quaisquer litígios, fica eleito o foro da Comarca do domicílio do usuário consumidor.
+        </p>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- IDIOMA: ENGLISH (US)                       -->
+    <!-- ========================================== -->
+    <div id="content-en" class="lang-section">
+      <div class="meta-box">
+        <div class="meta-item">
+          <strong>Application</strong>
+          <span>SeuGestor</span>
+        </div>
+        <div class="meta-item">
+          <strong>Developer Entity</strong>
+          <span>Elias Busatto</span>
+        </div>
+        <div class="meta-item">
+          <strong>Last Revision</strong>
+          <span>October 21, 2026</span>
+        </div>
+        <div class="meta-item">
+          <strong>Data Protection Contact</strong>
+          <span>feedback.whatsappgestor@gmail.com</span>
+        </div>
+      </div>
+
+      <div id="en-privacy" class="doc-section">
+        <div class="highlight-card">
+          <h3>Zero-Ads Guarantee &amp; Privacy-by-Design</h3>
+          <p>
+            SeuGestor operates on an encrypted decentralized data model: your financial records stay exclusively on your personal device. Neither free nor PRO tiers include advertising trackers or ad networks.
+          </p>
+        </div>
+
+        <h2>1. Overview and Legal Framework</h2>
+        <p>
+          This Privacy Policy explains how <strong>SeuGestor</strong> manages and protects user data in compliance with the <strong>General Data Protection Regulation (GDPR)</strong>, the <strong>California Consumer Privacy Act (CCPA)</strong>, Brazil's <strong>LGPD</strong>, and the <strong>Google Play Developer Data Policies</strong>.
+        </p>
+
+        <h2>2. Data Collection and Usage</h2>
+        <ul>
+          <li><strong>Local Financial Ledger &amp; Multiple Workspaces:</strong> Income, expenses, accounts, credit card balances, multiple ledger workspaces (Personal &amp; Business), and custom categories are saved exclusively on your local device storage.</li>
+          <li><strong>Credit Cards &amp; Invoices:</strong> You may register limits, card nicknames, and invoice statement dates. <em>The app NEVER requests, stores, or processes complete credit card numbers, CVV codes, or banking passwords.</em></li>
+          <li><strong>Microphone and Audio Processing (RECORD_AUDIO Permission):</strong> Voice commands capture speech only when you deliberately press the microphone button. Audio is transcribed to text on-device and transmitted via TLS to Google Gemini API to parse financial entities. <em>Audio is never recorded in the background, retained, or sold.</em></li>
+          <li><strong>Android Shortcuts &amp; Google Assistant (App Actions):</strong> The app exposes system shortcuts and Google Assistant voice capabilities. Voice parameters (e.g. transaction amount or note) are received only upon deliberate user invocation to fill out local entries.</li>
+          <li><strong>Google Sign-In &amp; Profile:</strong> Optional login collects your basic profile (name, email, avatar) strictly to enable profile personalization and private cloud backup.</li>
+          <li><strong>Biometric Security &amp; Local PIN:</strong> Biometric authentication (fingerprint, Face ID) is handled exclusively by the Android OS hardware-backed security enclave (Android BiometricPrompt). <em>The application never reads, accesses, or stores raw biometric prints.</em> The 4-digit PIN is stored locally as an irreversible cryptographic hash (SHA-256).</li>
+        </ul>
+
+        <h2>3. Google Drive API &amp; Nightly Auto-Backup (Restricted Scope)</h2>
+        <p>
+          SeuGestor utilizes the restricted scope <code>https://www.googleapis.com/auth/drive.appdata</code> to store optional encrypted user backups in the application's hidden data folder.
+        </p>
+        <p>
+          <strong>Limited Use Disclosure:</strong> SeuGestor does not access, read, or modify any files outside its designated AppData directory. The application adheres strictly to the <strong>Google API Services User Data Policy</strong>, including the Limited Use requirements.
+        </p>
+        <p>
+          <strong>Nightly Auto-Backup Routine:</strong> If enabled, a silent background task runs overnight via Android WorkManager exclusively to package your encrypted backup and upload it directly to your personal Google Drive AppData folder.
+        </p>
+
+        <h2>4. Artificial Intelligence (Google Gemini Enterprise API)</h2>
+        <p>
+          Under the Google Gemini Enterprise API Core Terms, financial text queries and voice commands processed by SeuGestor are never used to train or improve public foundation models.
+        </p>
+
+        <h2>5. Payments and In-App Subscriptions</h2>
+        <p>
+          All subscription payments are handled directly by Google Play Billing. SeuGestor never stores or has access to your credit card or sensitive billing credentials.
+        </p>
+
+        <h2>6. Security, Encryption &amp; Privacy Mode</h2>
+        <p>
+          Local ledgers and cloud backups are encrypted at rest with bank-grade AES-256. The app also features an instant privacy toggle to hide balances in public environments.
+        </p>
+
+        <h2>7. User Rights and Irreversible Deletion</h2>
+        <p>
+          Users may exercise their right to be forgotten at any time via the "Delete All Data" feature in Settings, which wipes all local databases and encryption keys immediately.
+        </p>
+      </div>
+
+      <div id="en-terms" class="doc-section" style="display: none;">
+        <h2>1. Terms Acceptance</h2>
+        <p>By downloading or using SeuGestor, you agree to these Terms of Service.</p>
+        <h2>2. Educational Nature of AI Financial Advisor</h2>
+        <p>
+          All insights provided by the AI CFP® Financial Advisor are for informational and educational purposes only and do not constitute certified individualized financial, legal, or investment advice.
+        </p>
+        <h2>3. Subscriptions and Cancellation</h2>
+        <p>
+          Subscriptions renew automatically through Google Play unless canceled at least 24 hours prior to the renewal date.
+        </p>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- IDIOMA: ESPAÑOL (ES)                       -->
+    <!-- ========================================== -->
+    <div id="content-es" class="lang-section">
+      <div class="meta-box">
+        <div class="meta-item">
+          <strong>Aplicación</strong>
+          <span>SeuGestor</span>
+        </div>
+        <div class="meta-item">
+          <strong>Desarrollador</strong>
+          <span>Elias Busatto</span>
+        </div>
+        <div class="meta-item">
+          <strong>Última Actualización</strong>
+          <span>21 de Octubre de 2026</span>
+        </div>
+        <div class="meta-item">
+          <strong>Contacto de Privacidad</strong>
+          <span>feedback.whatsappgestor@gmail.com</span>
+        </div>
+      </div>
+
+      <div id="es-privacy" class="doc-section">
+        <div class="highlight-card">
+          <h3>Compromiso Cero Publicidad y Privacidad desde el Diseño</h3>
+          <p>
+            SeuGestor funciona con almacenamiento local cifrado: su información financiera nunca sale de su dispositivo. Ninguna versión incluye publicidad ni rastreadores.
+          </p>
+        </div>
+
+        <h2>1. Introducción y Cumplimiento Normativo</h2>
+        <p>
+          Esta Política de Privacidad describe el tratamiento de datos en <strong>SeuGestor</strong>, cumpliendo con el <strong>RGPD</strong> europeo, la <strong>LGPD</strong> de Brasil y las directrices de <strong>Google Play</strong>.
+        </p>
+
+        <h2>2. Datos, Espacios de Trabajo y Permisos</h2>
+        <ul>
+          <li><strong>Libro Financiero Local y Múltiples Espacios (Workspaces):</strong> Ingresos, gastos, cuentas, tarjetas y categorías se guardan 100% de manera local y aislada en el dispositivo.</li>
+          <li><strong>Tarjetas de Crédito:</strong> La app solo guarda límites, alias y fechas de corte. <em>Nunca se solicitan ni guardan números completos de tarjeta, CVV o claves bancarias.</em></li>
+          <li><strong>Permiso de Micrófono (RECORD_AUDIO):</strong> Se utiliza exclusivamente cuando el usuario pulsa voluntariamente el botón de voz. El audio se procesa en tiempo real con la API Google Gemini para inferir datos y no queda guardado permanentemente.</li>
+          <li><strong>Atajos de Android y Asistente de Google (App Actions):</strong> La app ofrece atajos rápidos del sistema. Los parámetros de voz solo se reciben al accionar conscientemente el comando.</li>
+          <li><strong>Autenticación Biométrica y PIN:</strong> La biometría (huella / Face ID) es procesada exclusivamente por el enclave seguro del sistema operativo (Android BiometricPrompt). <em>La app nunca accede a los datos biométricos.</em> El PIN de 4 dígitos se almacena bajo hash criptográfico local (SHA-256).</li>
+        </ul>
+
+        <h2>3. Uso de Google Drive API y Copia Nocturna</h2>
+        <p>
+          Se utiliza el permiso restringido <code>drive.appdata</code> exclusivamente para respaldar copias de seguridad cifradas en la carpeta oculta de la app, sin acceso al resto de archivos de Google Drive del usuario.
+        </p>
+        <p>
+          Si se activa la copia automática nocturna, una tarea en segundo plano mediante Android WorkManager compila y sincroniza el archivo cifrado durante la madrugada.
+        </p>
+
+        <h2>4. Inteligencia Artificial (Google Gemini)</h2>
+        <p>
+          Conforme a los términos empresariales de Google Gemini API, los datos de las consultas y transacciones nunca se utilizan para entrenar modelos públicos.
+        </p>
+
+        <h2>5. Seguridad, Cifrado y Derechos de Supresión Total</h2>
+        <p>
+          Los registros locales y respaldos están protegidos con cifrado de grado bancario AES-256. El usuario puede borrar inmediatamente toda su información mediante la función "Eliminar todos los datos" ubicada en el menú de Configuración.
+        </p>
+      </div>
+
+      <div id="es-terms" class="doc-section" style="display: none;">
+        <h2>1. Términos de Servicio</h2>
+        <p>El uso de SeuGestor implica la aceptación de estas condiciones de servicio.</p>
+        <h2>2. Naturaleza Educativa de la IA Financiera</h2>
+        <p>
+          Las sugerencias del Consultor Financiero CFP® por IA son meramente formativas y analíticas, no constituyendo asesoramiento financiero regulado.
+        </p>
+      </div>
+    </div>
+
+    <!-- Caixa de Contato Oficial -->
+    <div class="contact-box">
+      <h3>Canal de Atendimento de Privacidade &amp; Suporte</h3>
+      <p style="margin-bottom: 8px;">
+        Para dúvidas sobre dados pessoais, requisições de titulares ou suporte técnico:
+      </p>
+      <p>
+        <a href="mailto:feedback.whatsappgestor@gmail.com">feedback.whatsappgestor@gmail.com</a>
+      </p>
+    </div>
+
+    <footer>
+      &copy; 2026 SeuGestor • Todos os direitos reservados • Desenvolvido por Elias Busatto
+    </footer>
+  </div>
+
+  <script>
+    let currentLang = 'pt';
+    let currentDoc = 'privacy';
+
+    function switchLang(lang) {
+      currentLang = lang;
+      document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+
+      document.querySelectorAll('.lang-section').forEach(sec => sec.classList.remove('active'));
+      document.getElementById('content-' + lang).classList.add('active');
+
+      renderCurrentDoc();
+    }
+
+    function switchDoc(doc) {
+      currentDoc = doc;
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+
+      renderCurrentDoc();
+    }
+
+    function renderCurrentDoc() {
+      ['pt', 'en', 'es'].forEach(lang => {
+        const priv = document.getElementById(lang + '-privacy');
+        const terms = document.getElementById(lang + '-terms');
+        if (priv && terms) {
+          priv.style.display = currentDoc === 'privacy' ? 'block' : 'none';
+          terms.style.display = currentDoc === 'terms' ? 'block' : 'none';
+        }
+      });
+    }
+  </script>
+</body>
+</html>

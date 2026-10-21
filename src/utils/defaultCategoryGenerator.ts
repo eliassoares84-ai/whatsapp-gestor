@@ -6,7 +6,7 @@ interface DefaultCategoryTemplate {
   color: string;
 }
 
-const DEFAULT_CATEGORY_COLORS: Record<string, string> = {
+const DEFAULT_CATEGORY_COLORS = {
   alimentacao: '#FF9500',
   transporte: '#34C759',
   lazer: '#FF2D55',
@@ -30,7 +30,7 @@ const DEFAULT_CATEGORY_COLORS: Record<string, string> = {
   
   investimentos: '#42C882',
   reservaEmergencia: '#FF6B6B',
-};
+} as const;
 
 const DEFAULT_CATEGORIES: Record<WorkspaceType, DefaultCategoryTemplate[]> = {
   personal: [

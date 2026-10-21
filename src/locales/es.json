@@ -1,0 +1,563 @@
+{
+  "dashboard": {
+    "currentBalance": "Saldo Actual",
+    "upcomingExpenses15d": "Gastos del mes",
+    "monthIncome": "Ingresos del Mes",
+    "monthExpenses": "Gastos del Mes",
+    "shortcuts": {
+      "launch": "Lanzar",
+      "cards": "Tarjetas",
+      "reports": "Informes",
+      "settings": "Ajustes"
+    },
+    "addTransaction": "Nueva Transacción",
+    "recent": "Recientes",
+    "latestMovements": "Últimos Movimientos",
+    "transactionFallback": "Movimiento",
+    "noTransactionsYet": "Aún no hay movimientos",
+    "firstTransactionHint": "Toca el botón + abajo para registrar tu primer ingreso o gasto usando texto o voz.",
+    "insights": {
+      "title": "Análisis Inteligente del Mes",
+      "loading": "Procesando tus movimientos..."
+    },
+    "edit": {
+      "title": "Editar movimiento",
+      "description": "Descripción",
+      "descriptionPlaceholder": "Ej: Almuerzo",
+      "amount": "Valor",
+      "amountPlaceholder": "0,00",
+      "category": "Categoría",
+      "cancel": "Cancelar",
+      "save": "Guardar",
+      "delete": "Eliminar",
+      "deleteConfirmTitle": "Eliminar movimiento",
+      "deleteConfirmMessage": "¿Estás seguro de que deseas eliminar este movimiento? Se recalcularán los saldos y límites.",
+      "deleteInstallmentsTitle": "Compra en Cuotas",
+      "deleteInstallmentsMessage": "Este movimiento es parte de una compra en {{total}} cuotas. ¿Qué deseas hacer?",
+      "deleteOnlyThis": "Solo esta cuota",
+      "deleteAllInstallments": "Todas las cuotas"
+    }
+  },
+  "onboarding": {
+    "title": "¿Cómo usarás la app?",
+    "subtitle": "Elige el perfil que mejor se adapte a tus necesidades.",
+    "popular": "Más popular",
+    "start": "Comenzar",
+    "profiles": {
+      "personal": {
+        "title": "Persona Física",
+        "description": "Solo control personal y del hogar."
+      },
+      "business": {
+        "title": "Persona Jurídica",
+        "description": "Solo control de mi empresa/negocio."
+      },
+      "hybrid": {
+        "title": "Híbrido",
+        "description": "Quiero separar mis finanzas personales de mi empresa."
+      }
+    }
+  },
+  "onboardingQuiz": {
+    "skip": "Saltar",
+    "stepOf": "Paso {{current}} de {{total}}",
+    "questions": {
+      "focus": "¿Cuál es tu enfoque hoy?",
+      "scope": "¿Qué vamos a organizar?",
+      "control": "¿Cómo te describirías?"
+    },
+    "options": {
+      "focus": {
+        "debt": {
+          "title": "Salir de Deudas",
+          "description": "Priorizar pagos y aliviar el flujo de caja en el corto plazo."
+        },
+        "save": {
+          "title": "Ahorrar/Invertir",
+          "description": "Crear reserva y ganar consistencia para multiplicar patrimonio."
+        },
+        "business": {
+          "title": "Gestionar Negocio",
+          "description": "Controlar ingresos, gastos y margen con visión de dueño."
+        }
+      },
+      "scope": {
+        "personal": {
+          "title": "Vida Personal",
+          "description": "Organizar gastos del hogar y rutina financiera personal."
+        },
+        "business": {
+          "title": "Empresa/Servicios",
+          "description": "Acompañar operación, flujo y resultados del negocio."
+        },
+        "both": {
+          "title": "Ambos",
+          "description": "Separar bien lo personal y profesional sin perder la visión consolidada."
+        }
+      },
+      "control": {
+        "beginner": {
+          "title": "Principiante",
+          "description": "Estoy empezando y quiero una base clara para avanzar."
+        },
+        "effort": {
+          "title": "Dedicado",
+          "description": "Ya tengo rutina, pero quiero más consistencia y automatización."
+        },
+        "ninja": {
+          "title": "Ninja",
+          "description": "Quiero precisión, velocidad y control fino de indicadores."
+        }
+      }
+    },
+    "alert": {
+      "title": "Aviso",
+      "message": "Ocurrió un problema al iniciar, pero puedes continuar localmente."
+    }
+  },
+  "googleLink": {
+    "title": "Conectar Cuenta de Google",
+    "subtitle": "Vincula tu cuenta para activar respaldo en la nube y restaurar tus datos con seguridad.",
+    "currentAccount": "Cuenta actual",
+    "driveBackup": "Respaldo automático en Google Drive",
+    "restore": "Restauración rápida al cambiar de dispositivo",
+    "sync": "Sincronización segura en appDataFolder",
+    "linkButton": "Vincular con Google",
+    "continueWithoutLink": "Continuar sin vincular",
+    "requiredHint": "Para modo Empresa/Híbrido, la vinculación con Google es obligatoria antes de continuar.",
+    "androidConfigHint": "Configura EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID (OAuth Android) para activar la vinculación.",
+    "iosConfigHint": "Configura EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID o EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID para activar la vinculación.",
+    "errors": {
+      "authCancelled": "Autenticación cancelada.",
+      "authCancelledRetry": "Autenticación cancelada. Inténtalo de nuevo.",
+      "invalidToken": "Token de acceso inválido. Inténtalo de nuevo.",
+      "cannotCompleteAuth": "No se pudo completar la autenticación con Google.",
+      "playServicesUnavailable": "Google Play Services no está disponible en este dispositivo.",
+      "connectError": "Error al conectar con Google. Verifica tu internet.",
+      "connectErrorWithCode": "Error al conectar con Google ({{code}})."
+    }
+  },
+  "settings": {
+    "title": "Mis Entornos",
+    "subtitle": "Gestiona tus workspaces y negocios",
+    "personalTitle": "Configuración",
+    "personalSubtitle": "Gestiona categorías, límites, gastos fijos y preferencias de tu espacio personal.",
+    "workspacePersonal": "Persona Física",
+    "workspaceBusiness": "Persona Jurídica",
+    "addBusiness": "Agregar Nuevo Negocio",
+    "categoriesTitle": "Categorías y Límites",
+    "categoriesSubtitle": "Toca una categoría para definir un límite mensual de gasto.",
+    "noCategories": "No hay categorías registradas en este entorno.",
+    "monthlyLimit": "Límite mensual: {{value}}",
+    "noLimit": "Sin límite definido",
+    "recurringTitle": "Gastos Fijos y Suscripciones",
+    "recurringSubtitle": "Programa gastos o ingresos que se repiten automáticamente.",
+    "noRecurring": "No hay gastos fijos registrados en este entorno.",
+    "frequencyWeekly": "Semanal, día {{day}}",
+    "frequencyYearly": "Anual, día {{day}}",
+    "frequencyMonthly": "Mensual, día {{day}}",
+    "addRecurring": "Agregar Nuevo Gasto Fijo",
+    "googleTitle": "Cuenta de Google",
+    "googleSubtitle": "Gestiona la cuenta usada para respaldo y restauración en la nube.",
+    "googleStatus": "Estado de vinculación",
+    "googleNoneLinked": "No hay cuenta vinculada por ahora.",
+    "googlePending": "Vinculación pendiente",
+    "switchAccount": "Cambiar cuenta",
+    "unlink": "Desvincular",
+    "manualBackupTitle": "Respaldo Manual",
+    "manualBackupSubtitle": "Genera un archivo completo de tus datos o restaura un respaldo guardado.",
+    "openBackupCenter": "Abrir Centro de Respaldo",
+    "importStatement": "Importar Extracto (CSV)",
+    "currencyTitle": "Moneda Principal",
+    "currencySubtitle": "Elige la moneda usada para mostrar valores en la app.",
+    "changeCurrency": "Cambiar moneda",
+    "appearance": "Apariencia",
+    "currentTheme": "Tema actual: {{theme}}",
+    "themeDark": "Oscuro",
+    "themeLight": "Claro",
+    "toggleTheme": "Cambiar tema",
+    "lastSync": "Última sincronización: {{value}}",
+    "syncNow": "Sincronizar Ahora",
+    "autoBackupTitle": "Respaldo automático nocturno",
+    "autoBackupSubtitle": "Ejecuta respaldo diario después de la hora configurada cuando hay sesión activa de Google.",
+    "autoBackupHourLabel": "Hora (0-23)",
+    "feedbackTitle": "Sugerencias y Mejoras",
+    "feedbackSubtitle": "Ayuda a mejorar la app con ideas y comentarios de tu experiencia.",
+    "sendSuggestion": "Enviar sugerencia de mejora",
+    "sendSuggestionSubtitle": "Abrir correo para enviar tu feedback",
+    "feedbackEmailSubject": "Sugerencia de mejora - App",
+    "feedbackEmailBody": "Hola, equipo.\n\nTengo la siguiente sugerencia de mejora:\n\n-\n\nContexto:\n\n\n¡Gracias!",
+    "privacyTitle": "Privacidad y Seguridad",
+    "privacySubtitle": "Accede a la política de privacidad y controla la eliminación local de tus datos.",
+    "privacyPolicy": "Política de Privacidad",
+    "privacyPolicySubtitle": "Abre el documento de privacidad publicado para las tiendas.",
+    "openPrivacyPolicy": "Abrir política",
+    "deleteAccountData": "Eliminar Mi Cuenta y Datos",
+    "deleteAccountDataSubtitle": "Elimina de este dispositivo tus registros financieros y preferencias de la app.",
+    "deleteAccountAction": "Eliminar Todo",
+    "pending": "Pendiente",
+    "todayAt": "Hoy a las {{time}}",
+    "atTime": "{{day}} a las {{time}}",
+    "budgetModalTitle": "Definir Límite Mensual",
+    "categoryFallback": "Categoría",
+    "cancel": "Cancelar",
+    "saveLimit": "Guardar Límite",
+    "alerts": {
+      "deleteRecurringTitle": "¿Eliminar gasto fijo?",
+      "deleteRecurringMessage": "Esta acción no afectará movimientos pasados, solo futuros.",
+      "delete": "Eliminar",
+      "deleteAll": "Eliminar Todo",
+      "invalidValueTitle": "Valor inválido",
+      "invalidValueMessage": "Ingresa un límite mensual válido.",
+      "invalidHourMessage": "Ingresa una hora válida entre 0 y 23.",
+      "syncPendingTitle": "Sincronización pendiente",
+      "syncPendingMessage": "No fue posible sincronizar ahora.",
+      "privacyPolicyTitle": "No se pudo abrir el enlace",
+      "privacyPolicyMessage": "Inténtalo de nuevo en unos instantes.",
+      "suggestionTitle": "No se pudo abrir el correo",
+      "suggestionMessage": "Configura una app de correo en el dispositivo e inténtalo de nuevo.",
+      "deleteAccountDataTitle": "Atención",
+      "deleteAccountDataMessage": "Atención: Esta acción es irreversible y borrará todos tus registros financieros de este dispositivo.",
+      "noCategoryTitle": "Sin categoría",
+      "noCategoryMessage": "Crea al menos una categoría en el entorno actual antes de importar el extracto.",
+      "invalidCsvTitle": "Formato no reconocido",
+      "invalidCsvMessage": "No se pudieron identificar columnas válidas. Usa un CSV con Fecha, Descripción y Valor.",
+      "importSuccessTitle": "Importación completada",
+      "importSuccessMessage": "{{count}} movimientos importados con éxito.",
+      "importFailureTitle": "Error de importación",
+      "importFailureMessage": "No fue posible leer el archivo seleccionado.",
+      "switchGoogleTitle": "Cambiar cuenta de Google",
+      "switchGoogleMessage": "Serás redirigido a la pantalla de vinculación para conectar otra cuenta.",
+      "continue": "Continuar",
+      "unlinkGoogleTitle": "Desvincular cuenta de Google",
+      "unlinkGoogleMessage": "El respaldo en la nube quedará indisponible hasta vincular otra cuenta."
+    }
+  },
+  "monthSelector": {
+    "openHistory": "Abrir historial de meses",
+    "previousMonth": "Mes anterior",
+    "nextMonth": "Mes siguiente",
+    "previousYear": "Año anterior",
+    "nextYear": "Año siguiente"
+  },
+  "workspaceNames": {
+    "personalDefault": "Mis Finanzas",
+    "businessDefault": "Mi Negocio"
+  },
+  "tour": {
+    "tooltip": {
+      "title": "Guía de la app",
+      "stepLabel": "Paso {{current}} de {{total}}",
+      "next": "Siguiente",
+      "skip": "Saltar",
+      "finish": "Finalizar",
+      "previous": "Volver"
+    },
+    "dashboard": {
+      "add": "Toca el botón + para registrar ingresos o gastos en segundos. Puedes escribir o usar voz para completar automáticamente.",
+      "accounts": "Aquí ves el saldo actual del workspace y el resumen de gastos próximos para actuar antes de que falte caja.",
+      "ai": "En este bloque recibes análisis inteligentes para reducir desperdicios y mejorar margen con base en los movimientos del mes.",
+      "transactionsEmpty": "Cuando registres entradas y salidas, tus movimientos aparecerán aquí en orden cronológico para edición rápida.",
+      "transactions": "Tu extracto rápido aparece en esta área. Toca un movimiento para editar valor, descripción y categoría sin salir de la pantalla inicial.",
+      "reportsNav": "En el menú inferior, toca aquí para abrir Reportes y seguir gráficos y rendimiento de caja.",
+      "cardsNav": "Toca aquí para gestionar tus tarjetas de crédito, seguir facturas y mantener el límite bajo control."
+    },
+    "reports": {
+      "dre": "Este bloque muestra tu estado de resultados resumido: ingresos, gastos y utilidad neta del workspace activo.",
+      "charts": "Aquí visualizas los gráficos de distribución de gastos y comparas consumo con el límite de cada categoría."
+    },
+    "cards": {
+      "create": "Comienza aquí para registrar una nueva tarjeta con límite, cierre y vencimiento.",
+      "list": "Las tarjetas aparecen aquí con uso de límite en tiempo real. Toca una tarjeta para abrir la factura por período.",
+      "pay": "Después de revisar los movimientos de la factura, usa este botón para pagarla con una cuenta de débito."
+    }
+  },
+  "lock": {
+    "title": "Acceso protegido",
+    "subtitle": "Desbloquea con biometría o con tu PIN de 4 dígitos.",
+    "unlockButton": "Desbloquear con Biometría",
+    "promptMessage": "Desbloquear acceso a la app",
+    "cancelLabel": "Cancelar",
+    "fallbackLabel": "Usar PIN o contraseña",
+    "enterPin": "Ingresa tu PIN de 4 dígitos",
+    "setupPinTitle": "Crear PIN de seguridad",
+    "setupPinSubtitle": "Define un PIN de 4 dígitos para proteger tus finanzas.",
+    "confirmPin": "Confirma tu PIN de 4 dígitos",
+    "pinMismatch": "Los PINs no coinciden. Inténtalo de nuevo.",
+    "pinCreated": "¡PIN creado con éxito!",
+    "skipPin": "Continuar sin PIN",
+    "changePin": "Cambiar PIN",
+    "removePin": "Eliminar PIN",
+    "useBiometrics": "Usar Biometría",
+    "usePin": "Usar PIN",
+    "biometricsNotAvailable": "Biometría no disponible en este dispositivo",
+    "errors": {
+      "authFailed": "No fue posible autenticar con biometría.",
+      "invalidPin": "PIN incorrecto. Inténtalo de nuevo."
+    }
+  },
+  "accounts": {
+    "title": "Cuentas Bancarias",
+    "newAccount": "Nueva cuenta",
+    "addAccount": "Agregar cuenta",
+    "emptyTitle": "No hay cuentas registradas",
+    "emptySubtitle": "Pronto podrás crear cuentas bancarias y seguir saldos por separado.",
+    "accountFallback": "Cuenta",
+    "suggestedColor": "Color sugerido: {{bank}}",
+    "cancel": "Cancelar",
+    "deleteAction": "Eliminar",
+    "deleteConfirmTitle": "Eliminar cuenta",
+    "deleteConfirmMessage": "¿Seguro que deseas eliminar la cuenta \"{{name}}\"? Esta acción también elimina los movimientos vinculados.",
+    "saveAccount": "Guardar cuenta",
+    "placeholders": {
+      "name": "Nombre de la cuenta o banco",
+      "balance": "Saldo inicial (ej: 1200,00)"
+    },
+    "types": {
+      "checking": "Cuenta corriente",
+      "savings": "Ahorros",
+      "cash": "Efectivo"
+    }
+  },
+  "backup": {
+    "title": "Respaldo y Restauración",
+    "subtitle": "Protege tus datos y recupera tu entorno cuando lo necesites.",
+    "googleLinkedWithName": "Cuenta vinculada: {{name}} ({{email}})",
+    "googleLinked": "Cuenta vinculada: {{email}}",
+    "generateTitle": "Generar Respaldo Completo",
+    "generateHelp": "Guarda este archivo en un lugar seguro, como Google Drive o correo.",
+    "generateButton": "Generar Respaldo Completo",
+    "syncDriveButton": "Sincronizar con Google Drive",
+    "restoreTitle": "Restaurar Datos",
+    "restoreHelp": "Esto reemplazará todos los datos actuales por los del archivo seleccionado.",
+    "restoreFileButton": "Restaurar Datos",
+    "restoreCloudButton": "Restaurar desde la Nube",
+    "alerts": {
+      "ok": "OK",
+      "confirmRestoreTitle": "¿Restaurar datos?",
+      "confirmRestoreMessage": "Esto borrará los datos actuales y reemplazará todo con el respaldo seleccionado.",
+      "confirmRestoreAction": "Restaurar",
+      "restoredTitle": "Respaldo restaurado",
+      "restoredMessage": "Los datos se restauraron correctamente.",
+      "restoredCloudMessage": "Datos restaurados correctamente desde la nube.",
+      "syncedTitle": "Sincronización completada",
+      "syncedMessage": "Respaldo enviado correctamente a Google Drive.",
+      "generatedTitle": "Respaldo generado",
+      "generatedMessage": "Tu respaldo fue generado y está listo para compartir.",
+      "generatedLocalTitle": "Respaldo generado",
+      "generatedLocalMessage": "El archivo se guardó en el dispositivo, pero la hoja de compartir no se abrió automáticamente.",
+      "nightlyAutoEnabledSuffix": "El respaldo automático diario nocturno se activó desde hoy.",
+      "exportFailedTitle": "Error al exportar",
+      "exportFailedMessage": "No fue posible generar el respaldo en este momento.",
+      "invalidJsonTitle": "Archivo inválido",
+      "invalidJsonMessage": "El archivo seleccionado no es un JSON válido.",
+      "invalidStructureTitle": "Estructura inválida",
+      "invalidStructureMessage": "El archivo no coincide con la estructura esperada del respaldo.",
+      "restoreFailedTitle": "Error al restaurar",
+      "restoreFailedMessage": "No fue posible leer el archivo seleccionado.",
+      "syncPendingTitle": "Sincronización pendiente",
+      "syncPendingMessage": "No fue posible restaurar o sincronizar el respaldo en la nube en este momento.",
+      "googleSessionExpired": "Tu sesión de Google expiró. Reconecta tu cuenta para continuar sincronizando.",
+      "reconnect": "Reconectar"
+    }
+  },
+  "paywall": {
+    "badge": "Premium",
+    "title": "Desbloquea tu Consultoría Financiera IA",
+    "subtitle": "Obtén recomendaciones avanzadas y estrategias personalizadas para acelerar tus resultados.",
+    "subscribeButton": "Suscribirse Premium",
+    "benefits": {
+      "unlimitedAI": "Consultoría IA Ilimitada",
+      "investorProfile": "Análisis de Perfil de Inversor",
+      "personalizedSavings": "Consejos Personalizados de Ahorro"
+    }
+  },
+  "cards": {
+    "title": "Tarjetas de Crédito",
+    "newCard": "Nueva tarjeta",
+    "emptyTitle": "No hay tarjetas registradas",
+    "emptySubtitle": "Agrega una tarjeta para controlar límite y facturas por período.",
+    "closingDue": "Cierre día {{closingDay}} • Vencimiento día {{dueDay}}",
+    "available": "Disponible: {{amount}}",
+    "nextInvoices": "Próximas facturas",
+    "noProjectedInvoices": "Sin facturas abiertas proyectadas.",
+    "invoiceFallback": "Factura",
+    "purchaseFallback": "Compra en crédito",
+    "invoiceSummary": "Abierta: {{open}} • Total del mes: {{total}}",
+    "installmentOf": "Cuota {{current}}/{{total}}",
+    "statusOpen": "Abierta",
+    "statusPaid": "Pagada",
+    "payInvoice": "Pagar Factura",
+    "invoicePayment": "Pago de Factura",
+    "paidAmount": "Valor pagado",
+    "debitAccount": "Cuenta de débito",
+    "cancel": "Cancelar",
+    "deleteAction": "Eliminar",
+    "deleteConfirmTitle": "Eliminar tarjeta",
+    "deleteConfirmMessage": "¿Seguro que deseas eliminar la tarjeta \"{{name}}\"? Esta acción también elimina los movimientos vinculados.",
+    "save": "Guardar",
+    "confirm": "Confirmar",
+    "placeholders": {
+      "name": "Nombre de la tarjeta",
+      "limit": "Límite total",
+      "closing": "Cierre",
+      "due": "Vencimiento",
+      "amount": "0,00"
+    }
+  },
+  "reports": {
+    "headerTitle": "Reportes: {{workspace}}",
+    "workspaceFallback": "Workspace",
+    "subtitle": "Vista consolidada del entorno seleccionado.",
+    "export": "Exportar",
+    "exportReport": "Exportar Reporte",
+    "exportChooseFormat": "Elige un formato de exportación:",
+    "exportAsPdf": "EXPORTAR COMO PDF",
+    "exportAsCsv": "EXPORTAR COMO CSV",
+    "noDataSubtitle": "No hay datos suficientes para análisis.",
+    "emptyTitle": "Necesitamos más datos",
+    "emptySubtitle": "Sigue registrando tus movimientos para desbloquear inteligencia financiera.",
+    "cardTitlePersonal": "Balance Mensual",
+    "cardTitleBusiness": "Resultado del Mes",
+    "grossRevenue": "Ingresos Brutos",
+    "costsExpenses": "Costos/Gastos",
+    "netProfit": "Utilidad Neta",
+    "profitWithdrawal": "Retiro de Utilidades/Aportes",
+    "whereMoneyGoes": "A dónde va tu dinero",
+    "noExpensesDistribution": "Aún no hay gastos para armar la distribución por categoría."
+  },
+  "premiumTeaser": {
+    "titleActive": "Consultoría IA Activa",
+    "titleLocked": "Análisis Inteligente del Mes",
+    "subtitleActive": "Tus insights premium están listos para revisar.",
+    "subtitleLocked": "Descubre patrones ocultos en tus gastos del mes y dónde invertir lo que sobra.",
+    "income": "Ingresos",
+    "expense": "Gastos",
+    "ctaActive": "Abrir Consultoría IA",
+    "ctaLocked": "Desbloquear Análisis IA"
+  },
+  "transferModal": {
+    "title": "Transferir capital",
+    "from": "De (Origen)",
+    "to": "Para (Destino)",
+    "amount": "Valor",
+    "description": "Descripción",
+    "descriptionPlaceholder": "Transferencia entre entornos",
+    "autoDescription": "Transferencia de {{from}} a {{to}}",
+    "confirm": "Confirmar Transferencia",
+    "errors": {
+      "invalidTransferTitle": "Transferencia inválida",
+      "invalidTransferMessage": "Elige entornos de origen y destino diferentes.",
+      "invalidAmountTitle": "Valor inválido",
+      "invalidAmountMessage": "Ingresa un valor mayor que cero."
+    }
+  },
+  "recurringModal": {
+    "createTitle": "Nuevo Registro Recurrente",
+    "editTitle": "Editar Registro Recurrente",
+    "description": "Descripción",
+    "descriptionPlaceholder": "¿Qué es esto?",
+    "amount": "Valor",
+    "typeLabel": "Tipo",
+    "frequencyLabel": "Frecuencia",
+    "dayOfMonth": "Día del Mes (1 a 31)",
+    "saveChanges": "Guardar Cambios",
+    "saveSchedule": "Guardar Programación",
+    "type": {
+      "income": "Ingreso",
+      "expense": "Gasto"
+    },
+    "frequency": {
+      "weekly": "Semanal",
+      "monthly": "Mensual",
+      "yearly": "Anual"
+    }
+  },
+  "workspaceModal": {
+    "createTitle": "Nuevo Negocio",
+    "editTitle": "Editar Entorno",
+    "name": "Nombre del Entorno",
+    "namePlaceholder": "Ej: Indikcon, Snackscoffee...",
+    "type": "Tipo de Entorno",
+    "themeColor": "Color del Tema",
+    "save": "Guardar"
+  },
+  "tutorialOverlay": {
+    "skipAll": "Saltar Todo",
+    "start": "Comenzar",
+    "next": "Siguiente",
+    "steps": {
+      "voice": {
+        "title": "🎤 Entrada por Voz",
+        "description": "Di algo como: \"Gasté 50 reales en café en Snackscoffee\" y yo me encargo del resto."
+      },
+      "workspace": {
+        "title": "🏢 Cambia de Contexto",
+        "description": "Separa tu vida personal de tus empresas con un toque. Cada workspace tiene movimientos aislados."
+      },
+      "confirmation": {
+        "title": "✅ Siempre Confirmo",
+        "description": "Siempre te preguntaré si entendí bien antes de guardar. Nada se guarda sin tu aprobación."
+      }
+    }
+  },
+  "fastEntry": {
+    "title": "Nuevo Registro",
+    "inputPlaceholder": "Ej: Recibí 1500 de consultoría en Indikcon...",
+    "analyze": "Analizar",
+    "loading": "Cargando...",
+    "amount": "Valor",
+    "category": "Categoría",
+    "newCategory": "Nueva",
+    "newCategoryPlaceholder": "Ej: Transporte app",
+    "addCategory": "Agregar",
+    "selectedCategory": "Seleccionada: {{name}}",
+    "selectCategoryHint": "Selecciona una categoría antes de guardar.",
+    "accountLabel": "Cuenta/Banco",
+    "selectedAccount": "Cuenta seleccionada: {{name}}",
+    "selectAccountHint": "Selecciona la cuenta para registrar el movimiento.",
+    "defaultAccountHint": "Se usará la cuenta predeterminada automáticamente.",
+    "creditCardLabel": "Tarjeta de crédito",
+    "selectedCard": "Tarjeta seleccionada: {{name}}",
+    "selectCardHint": "Selecciona la tarjeta para registrar la compra a crédito.",
+    "installmentsLabel": "Cuotas",
+    "installmentsHint": "Compra configurada en {{count}} cuotas. Las próximas facturas se proyectarán automáticamente.",
+    "confirmSave": "Confirmar y Guardar",
+    "type": {
+      "income": "Ingreso",
+      "expense": "Gasto"
+    },
+    "paymentMethod": {
+      "label": "Forma de pago",
+      "cash": "Efectivo",
+      "debit": "Débito",
+      "credit": "Crédito",
+      "pix": "Pix"
+    },
+    "messages": {
+      "freeModeReady": "Modo gratuito: registro preparado sin IA avanzada. Revisa y confirma para guardar.",
+      "freeModeNeedAmount": "Modo gratuito: informa el valor en el texto y confirma para guardar sin IA avanzada.",
+      "aiFailedWithAmount": "No se pudo procesar con IA ahora. Valor detectado: {{amount}}. Confirma manualmente.",
+      "aiFailedNoAmount": "No se pudo procesar con IA ahora. Completa el valor manualmente.",
+      "selectAccountRequired": "Selecciona la cuenta/banco de origen o destino para continuar.",
+      "selectCardRequired": "Selecciona la tarjeta de crédito para continuar.",
+      "selectCategoryRequired": "Selecciona una categoría para completar el registro."
+    }
+  },
+  "categoryLabels": {
+    "alimentacao": "Alimentación",
+    "transporte": "Transporte",
+    "lazer": "Ocio",
+    "saude": "Salud",
+    "moradia": "Vivienda",
+    "outros": "Otros",
+    "impostos": "Impuestos",
+    "marketing": "Marketing",
+    "softwareSaas": "Software/SaaS",
+    "proLabore": "Sueldo del Socio",
+    "escritorio": "Oficina",
+    "consultoriaExterna": "Consultoría Externa",
+    "investimentos": "Inversiones",
+    "reservaEmergencia": "Fondo de Emergencia"
+  }
+}

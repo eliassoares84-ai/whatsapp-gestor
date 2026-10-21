@@ -1,14 +1,20 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Animated,
   Dimensions,
+  Easing,
   GestureResponderEvent,
+  Keyboard,
+  KeyboardEvent,
+  Platform,
   Pressable,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useFinanceStore } from '../store/useFinanceStore';
 
@@ -19,8 +25,8 @@ const TEXT_SECONDARY = '#CCCCCC';
 
 interface TutorialStep {
   id: string;
-  title: string;
-  description: string;
+  titleKey: string;
+  descriptionKey: string;
   targetArea?: {
     x: number;
     y: number;
@@ -38,23 +44,20 @@ interface TutorialOverlayProps {
 const STEPS: TutorialStep[] = [
   {
     id: 'voice-ai',
-    title: '🎤 Entrada por Voz',
-    description:
-      'Diga algo como: "Gastei 50 reais com café na Snackscoffee" e eu cuido do resto.',
+    titleKey: 'tutorialOverlay.steps.voice.title',
+    descriptionKey: 'tutorialOverlay.steps.voice.description',
     balloonPosition: 'top',
   },
   {
     id: 'workspace-switch',
-    title: '🏢 Troque de Contexto',
-    description:
-      'Separe sua vida pessoal das suas empresas com um toque. Cada workspace tem suas transações isoladas.',
+    titleKey: 'tutorialOverlay.steps.workspace.title',
+    descriptionKey: 'tutorialOverlay.steps.workspace.description',
     balloonPosition: 'bottom',
   },
   {
     id: 'confirmation-loop',
-    title: '✅ Sempre Confirmo',
-    description:
-      'Eu sempre vou te perguntar se entendi direito antes de salvar. Nada é salvo sem sua aprovação.',
+    titleKey: 'tutorialOverlay.steps.confirmation.title',
+    descriptionKey: 'tutorialOverlay.steps.confirmation.description',
     balloonPosition: 'top',
   },
 ];
@@ -63,17 +66,47 @@ export const TutorialOverlay: React.FC<TutorialOverlayProps> = ({
   fabPosition,
   workspaceSelectorPosition,
 }) => {
+  const { t } = useTranslation();
+  const { width, height } = Dimensions.get('window');
+  const insets = useSafeAreaInsets();
   const { markTutorialAsSeen } = useFinanceStore();
   const [currentStep, setCurrentStep] = useState(0);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(50)).current;
+  const balloonTopAnim = useRef(new Animated.Value(0)).current;
+  const keyboardAnimConfigRef = useRef<{
+    duration: number;
+    easing: (value: number) => number;
+  }>({
+    duration: 220,
+    easing: Easing.out(Easing.cubic),
+  });
 
   const step = STEPS[currentStep];
   const isLastStep = currentStep === STEPS.length - 1;
+  const sideMargin = 16;
+  const balloonWidth = Math.min(340, width - sideMargin * 2);
+  const estimatedBalloonHeight = 250;
 
   if (!step) {
     return null;
   }
+
+  const resolveKeyboardEasing = (easing?: string) => {
+    switch (easing) {
+      case 'easeIn':
+        return Easing.in(Easing.ease);
+      case 'easeOut':
+        return Easing.out(Easing.ease);
+      case 'easeInEaseOut':
+        return Easing.inOut(Easing.ease);
+      case 'linear':
+        return Easing.linear;
+      default:
+        return Easing.out(Easing.cubic);
+    }
+  };
 
   // Determine target area based on current step
   const targetArea = useMemo(() => {
@@ -92,12 +125,12 @@ export const TutorialOverlay: React.FC<TutorialOverlayProps> = ({
 
     // Confirmation step: no specific target, just center
     return {
-      x: Dimensions.get('window').width / 2 - 60,
-      y: Dimensions.get('window').height / 2 - 60,
+      x: width / 2 - 60,
+      y: height / 2 - 60,
       width: 120,
       height: 120,
     };
-  }, [step!.id, fabPosition, workspaceSelectorPosition]);
+  }, [step!.id, fabPosition, workspaceSelectorPosition, width, height]);
 
   // Animate in
   useEffect(() => {
@@ -114,6 +147,43 @@ export const TutorialOverlay: React.FC<TutorialOverlayProps> = ({
       }),
     ]).start();
   }, [fadeAnim, slideAnim, currentStep]);
+
+  useEffect(() => {
+    const showEvent = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
+    const hideEvent = Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
+
+    const showSub = Keyboard.addListener(showEvent, (event: KeyboardEvent) => {
+      keyboardAnimConfigRef.current = {
+        duration:
+          Platform.OS === 'ios' && event?.duration
+            ? Math.max(120, event.duration)
+            : 220,
+        easing:
+          Platform.OS === 'ios'
+            ? resolveKeyboardEasing((event as KeyboardEvent & { easing?: string }).easing)
+            : Easing.out(Easing.cubic),
+      };
+      setKeyboardHeight(event.endCoordinates.height);
+    });
+    const hideSub = Keyboard.addListener(hideEvent, (event: KeyboardEvent) => {
+      keyboardAnimConfigRef.current = {
+        duration:
+          Platform.OS === 'ios' && event?.duration
+            ? Math.max(120, event.duration)
+            : 220,
+        easing:
+          Platform.OS === 'ios'
+            ? resolveKeyboardEasing((event as KeyboardEvent & { easing?: string }).easing)
+            : Easing.out(Easing.cubic),
+      };
+      setKeyboardHeight(0);
+    });
+
+    return () => {
+      showSub.remove();
+      hideSub.remove();
+    };
+  }, []);
 
   const handleNext = () => {
     // Animate out
@@ -143,11 +213,51 @@ export const TutorialOverlay: React.FC<TutorialOverlayProps> = ({
     markTutorialAsSeen();
   };
 
-  const balloonLeft = Math.max(16, Math.min(targetArea.x, Dimensions.get('window').width - 200));
+  const targetCenterX = targetArea.x + targetArea.width / 2;
+  const balloonLeft = Math.max(
+    sideMargin,
+    Math.min(targetCenterX - balloonWidth / 2, width - sideMargin - balloonWidth)
+  );
   const balloonTop =
     step!.balloonPosition === 'top'
       ? targetArea.y - 150
       : targetArea.y + targetArea.height + 40;
+  const minBalloonTop = insets.top + 16;
+  const keyboardOffset = keyboardHeight > 0 ? keyboardHeight + 12 : insets.bottom;
+  const maxBalloonTop = Math.max(minBalloonTop, height - keyboardOffset - estimatedBalloonHeight);
+  const clampedBalloonTop = Math.max(minBalloonTop, Math.min(balloonTop, maxBalloonTop));
+  const resolvedBalloonLeft =
+    step!.id === 'voice-ai'
+      ? width - sideMargin - balloonWidth
+      : step!.id === 'confirmation-loop'
+        ? sideMargin
+        : balloonLeft;
+  const arrowMargin = 24;
+  const arrowHalfWidth = 12;
+  const arrowOffset = Math.max(
+    arrowMargin,
+    Math.min(
+      targetCenterX - resolvedBalloonLeft - arrowHalfWidth,
+      balloonWidth - arrowMargin - arrowHalfWidth * 2
+    )
+  );
+  const balloonHorizontalPosition =
+    step!.id === 'voice-ai'
+      ? { right: sideMargin }
+      : step!.id === 'confirmation-loop'
+        ? { left: sideMargin, right: sideMargin }
+        : { left: balloonLeft };
+
+  useEffect(() => {
+    const { duration, easing } = keyboardAnimConfigRef.current;
+
+    Animated.timing(balloonTopAnim, {
+      toValue: clampedBalloonTop,
+      duration,
+      easing,
+      useNativeDriver: false,
+    }).start();
+  }, [balloonTopAnim, clampedBalloonTop]);
 
   return (
     <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
@@ -191,18 +301,26 @@ export const TutorialOverlay: React.FC<TutorialOverlayProps> = ({
       <Animated.View
         style={[
           styles.balloonContainer,
+          balloonHorizontalPosition,
           {
-            left: balloonLeft,
-            top: Math.max(40, balloonTop),
-            opacity: fadeAnim,
-            transform: [{ translateY: slideAnim }],
+            top: balloonTopAnim,
+            width: balloonWidth,
+            maxWidth: width - sideMargin * 2,
           },
         ]}
         pointerEvents="box-none"
       >
+        <Animated.View
+          style={[
+            {
+            opacity: fadeAnim,
+            transform: [{ translateY: slideAnim }],
+          },
+        ]}
+      >
         <View style={styles.balloon}>
-          <Text style={styles.balloonTitle}>{step!.title}</Text>
-          <Text style={styles.balloonDescription}>{step!.description}</Text>
+          <Text style={styles.balloonTitle}>{t(step!.titleKey)}</Text>
+          <Text style={styles.balloonDescription}>{t(step!.descriptionKey)}</Text>
 
           {/* Step indicator dots */}
           <View style={styles.dotsContainer}>
@@ -226,7 +344,7 @@ export const TutorialOverlay: React.FC<TutorialOverlayProps> = ({
               onPress={handleSkipAll}
               android_ripple={{ color: 'rgba(255, 255, 255, 0.1)' }}
             >
-              <Text style={styles.skipButtonText}>Pular Tudo</Text>
+              <Text style={styles.skipButtonText}>{t('tutorialOverlay.skipAll')}</Text>
             </Pressable>
 
             <Pressable
@@ -235,7 +353,7 @@ export const TutorialOverlay: React.FC<TutorialOverlayProps> = ({
               android_ripple={{ color: 'rgba(10, 132, 255, 0.2)' }}
             >
               <Text style={styles.nextButtonText}>
-                {isLastStep ? 'Começar' : 'Próximo'}
+                {isLastStep ? t('tutorialOverlay.start') : t('tutorialOverlay.next')}
               </Text>
               <MaterialCommunityIcons
                 name={isLastStep ? 'check' : 'chevron-right'}
@@ -252,6 +370,7 @@ export const TutorialOverlay: React.FC<TutorialOverlayProps> = ({
           style={[
             styles.balloonArrow,
             {
+              marginLeft: arrowOffset,
               [step!.balloonPosition === 'top' ? 'bottom' : 'top']: -12,
               borderTopColor:
                 step!.balloonPosition === 'top' ? 'transparent' : '#1A1A1A',
@@ -260,6 +379,7 @@ export const TutorialOverlay: React.FC<TutorialOverlayProps> = ({
             },
           ]}
         />
+        </Animated.View>
       </Animated.View>
     </View>
   );
@@ -284,7 +404,8 @@ const styles = StyleSheet.create({
   },
   balloonContainer: {
     position: 'absolute',
-    width: 280,
+    width: 'auto',
+    paddingBottom: 40,
   },
   balloon: {
     backgroundColor: '#1A1A1A',
@@ -309,6 +430,8 @@ const styles = StyleSheet.create({
     color: TEXT_SECONDARY,
     lineHeight: 20,
     marginBottom: 20,
+    flexShrink: 1,
+    flexWrap: 'wrap',
   },
   dotsContainer: {
     flexDirection: 'row',

@@ -25,6 +25,9 @@ android/app/build/
 ios/build/
 *.apk
 *.aab
+*.jks
+*.keystore
+*.zip
 
 # Expo Updates
 *.expo.ts

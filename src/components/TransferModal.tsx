@@ -1,9 +1,12 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 import {
   Alert,
+  KeyboardAvoidingView,
   Modal,
+  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -14,6 +17,8 @@ import {
 
 import { useFinanceStore } from '../store/useFinanceStore';
 import type { WorkspaceId } from '../types/finance.types';
+import { getLocalizedWorkspaceName } from '../utils/workspaceLocalization';
+import { uppercaseFirstLetter } from '../utils/textInputFormat';
 
 const APP_BG = '#0A0A0A';
 const CARD_BG = '#121212';
@@ -46,6 +51,7 @@ export const TransferModal: React.FC<TransferModalProps> = ({
   visible,
   onClose,
 }) => {
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const { currentWorkspaceId, workspaces, transferBetweenWorkspaces } =
     useFinanceStore();
@@ -65,6 +71,16 @@ export const TransferModal: React.FC<TransferModalProps> = ({
     (workspace) => workspace.id === fromWorkspaceId
   );
   const toWorkspace = workspaces.find((workspace) => workspace.id === toWorkspaceId);
+
+  const getWorkspaceDisplayName = (workspaceId: WorkspaceId): string => {
+    const workspace = workspaces.find((item) => item.id === workspaceId);
+
+    if (!workspace) {
+      return '';
+    }
+
+    return getLocalizedWorkspaceName(workspace, t);
+  };
 
   useEffect(() => {
     if (!visible) {
@@ -108,8 +124,13 @@ export const TransferModal: React.FC<TransferModalProps> = ({
       return;
     }
 
-    setDescription(`Transferência de ${fromWorkspace.name} para ${toWorkspace.name}`);
-  }, [fromWorkspace, toWorkspace, isDescriptionDirty]);
+    setDescription(
+      t('transferModal.autoDescription', {
+        from: getWorkspaceDisplayName(fromWorkspace.id),
+        to: getWorkspaceDisplayName(toWorkspace.id),
+      })
+    );
+  }, [fromWorkspace, toWorkspace, isDescriptionDirty, t, workspaces]);
 
   const handleClose = () => {
     setIsDescriptionDirty(false);
@@ -121,14 +142,14 @@ export const TransferModal: React.FC<TransferModalProps> = ({
 
     if (!fromWorkspaceId || !toWorkspaceId || fromWorkspaceId === toWorkspaceId) {
       Alert.alert(
-        'Transferência inválida',
-        'Escolha ambientes de origem e destino diferentes.'
+        t('transferModal.errors.invalidTransferTitle'),
+        t('transferModal.errors.invalidTransferMessage')
       );
       return;
     }
 
     if (amount <= 0) {
-      Alert.alert('Valor inválido', 'Informe um valor maior que zero.');
+      Alert.alert(t('transferModal.errors.invalidAmountTitle'), t('transferModal.errors.invalidAmountMessage'));
       return;
     }
 
@@ -185,7 +206,7 @@ export const TransferModal: React.FC<TransferModalProps> = ({
                   { color: isSelected ? TEXT_PRIMARY : TEXT_SECONDARY },
                 ]}
               >
-                {workspace.name}
+                {getLocalizedWorkspaceName(workspace, t)}
               </Text>
             </Pressable>
           );
@@ -197,60 +218,73 @@ export const TransferModal: React.FC<TransferModalProps> = ({
   return (
     <Modal transparent visible={visible} animationType="fade" onRequestClose={handleClose}>
       <View style={[styles.overlay, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
-        <View style={[styles.card, { backgroundColor: CARD_BG }]}> 
-          <View style={styles.header}>
-            <Text style={[styles.title, { color: TEXT_PRIMARY }]}>Transferir capital</Text>
-            <Pressable onPress={handleClose}>
-              <MaterialCommunityIcons name="close" size={24} color={TEXT_SECONDARY} />
-            </Pressable>
+        <KeyboardAvoidingView
+          style={styles.keyboardAvoiding}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={insets.bottom + 8}
+        >
+          <View style={[styles.card, { backgroundColor: CARD_BG }]}> 
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              keyboardShouldPersistTaps="handled"
+              contentContainerStyle={styles.cardContent}
+            >
+              <View style={styles.header}>
+                <Text style={[styles.title, { color: TEXT_PRIMARY }]}>{t('transferModal.title')}</Text>
+                <Pressable onPress={handleClose}>
+                  <MaterialCommunityIcons name="close" size={24} color={TEXT_SECONDARY} />
+                </Pressable>
+              </View>
+
+              {renderWorkspaceSelector(
+                t('transferModal.from'),
+                fromWorkspaceId,
+                setFromWorkspaceId,
+                workspaces,
+                false
+              )}
+
+              {renderWorkspaceSelector(
+                t('transferModal.to'),
+                toWorkspaceId,
+                setToWorkspaceId,
+                availableTargets,
+                true
+              )}
+
+              <View style={styles.fieldBlock}>
+                <Text style={[styles.label, { color: TEXT_PRIMARY }]}>{t('transferModal.amount')}</Text>
+                <TextInput
+                  value={amountText}
+                  onChangeText={(value) => setAmountText(formatCurrencyInput(value))}
+                  placeholder="0,00"
+                  placeholderTextColor={TEXT_SECONDARY}
+                  keyboardType="numeric"
+                  style={[styles.amountInput, { color: TEXT_PRIMARY, backgroundColor: APP_BG }]}
+                />
+              </View>
+
+              <View style={styles.fieldBlock}>
+                <Text style={[styles.label, { color: TEXT_PRIMARY }]}>{t('transferModal.description')}</Text>
+                <TextInput
+                  value={description}
+                  onChangeText={(value) => {
+                    setDescription(uppercaseFirstLetter(value));
+                    setIsDescriptionDirty(true);
+                  }}
+                  placeholder={t('transferModal.descriptionPlaceholder')}
+                  placeholderTextColor={TEXT_SECONDARY}
+                  autoCapitalize="sentences"
+                  style={[styles.descriptionInput, { color: TEXT_PRIMARY, backgroundColor: APP_BG }]}
+                />
+              </View>
+
+              <Pressable style={styles.confirmButton} onPress={handleConfirm}>
+                <Text style={styles.confirmButtonText}>{t('transferModal.confirm')}</Text>
+              </Pressable>
+            </ScrollView>
           </View>
-
-          {renderWorkspaceSelector(
-            'De (Origem)',
-            fromWorkspaceId,
-            setFromWorkspaceId,
-            workspaces,
-            false
-          )}
-
-          {renderWorkspaceSelector(
-            'Para (Destino)',
-            toWorkspaceId,
-            setToWorkspaceId,
-            availableTargets,
-            true
-          )}
-
-          <View style={styles.fieldBlock}>
-            <Text style={[styles.label, { color: TEXT_PRIMARY }]}>Valor</Text>
-            <TextInput
-              value={amountText}
-              onChangeText={(value) => setAmountText(formatCurrencyInput(value))}
-              placeholder="0,00"
-              placeholderTextColor={TEXT_SECONDARY}
-              keyboardType="numeric"
-              style={[styles.amountInput, { color: TEXT_PRIMARY, backgroundColor: APP_BG }]}
-            />
-          </View>
-
-          <View style={styles.fieldBlock}>
-            <Text style={[styles.label, { color: TEXT_PRIMARY }]}>Descrição</Text>
-            <TextInput
-              value={description}
-              onChangeText={(value) => {
-                setDescription(value);
-                setIsDescriptionDirty(true);
-              }}
-              placeholder="Transferência entre ambientes"
-              placeholderTextColor={TEXT_SECONDARY}
-              style={[styles.descriptionInput, { color: TEXT_PRIMARY, backgroundColor: APP_BG }]}
-            />
-          </View>
-
-          <Pressable style={styles.confirmButton} onPress={handleConfirm}>
-            <Text style={styles.confirmButtonText}>Confirmar Transferência</Text>
-          </Pressable>
-        </View>
+        </KeyboardAvoidingView>
       </View>
     </Modal>
   );
@@ -263,10 +297,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: 'rgba(0, 0, 0, 0.72)',
   },
+  keyboardAvoiding: {
+    width: '100%',
+  },
   card: {
     borderRadius: 24,
     paddingHorizontal: 20,
     paddingVertical: 18,
+    maxHeight: '90%',
+  },
+  cardContent: {
+    paddingBottom: 6,
   },
   header: {
     flexDirection: 'row',

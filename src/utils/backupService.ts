@@ -1,6 +1,6 @@
-import { Alert, Share } from 'react-native';
+import { Share } from 'react-native';
 
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import * as Sharing from 'expo-sharing';
 
 import {
@@ -11,6 +11,28 @@ import {
 
 const isObject = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null;
+
+export type BackupExportErrorCode =
+  | 'serialize_failed'
+  | 'no_writable_dir'
+  | 'write_failed';
+
+export interface ExportDataResult {
+  ok: boolean;
+  fileUri?: string;
+  shared?: boolean;
+  errorCode?: BackupExportErrorCode;
+}
+
+export type BackupImportErrorCode =
+  | 'invalid_json'
+  | 'invalid_structure'
+  | 'apply_failed';
+
+export interface ImportDataResult {
+  ok: boolean;
+  errorCode?: BackupImportErrorCode;
+}
 
 const isValidBackupPayload = (value: unknown): value is FinanceBackupState => {
   if (!isObject(value)) {
@@ -28,86 +50,130 @@ const isValidBackupPayload = (value: unknown): value is FinanceBackupState => {
   );
 };
 
-export const exportData = async (): Promise<void> => {
+export const exportData = async (): Promise<ExportDataResult> => {
   const backupPayload = getFinanceBackupState();
-  const jsonString = JSON.stringify(backupPayload, null, 2);
+  let jsonString = '';
 
   try {
-    const cacheDir = (FileSystem as any).cacheDirectory;
-    const fileUri = `${cacheDir}micro-erp-backup-${Date.now()}.json`;
+    jsonString = JSON.stringify(backupPayload, null, 2);
+  } catch {
+    return { ok: false, errorCode: 'serialize_failed' };
+  }
 
-    await FileSystem.writeAsStringAsync(fileUri, jsonString, {
-      encoding: ((FileSystem as any).EncodingType?.UTF8) || 'utf8',
-    });
+  try {
+    const baseDir =
+      FileSystem.documentDirectory ||
+      FileSystem.cacheDirectory;
 
-    if (await Sharing.isAvailableAsync()) {
-      await Sharing.shareAsync(fileUri, {
-        mimeType: 'application/json',
-        dialogTitle: 'Gerar Backup Completo',
-        UTI: 'public.json',
-      });
-      return;
+    if (!baseDir) {
+      return { ok: false, errorCode: 'no_writable_dir' };
     }
 
-    await Share.share({
-      title: 'Backup do Micro-ERP',
-      message: jsonString,
-    });
+    const backupDir = `${baseDir}backups/`;
+    await FileSystem.makeDirectoryAsync(backupDir, { intermediates: true });
+
+    const fileUri = `${backupDir}seugestor-backup-${Date.now()}.json`;
+
+    try {
+      await FileSystem.writeAsStringAsync(fileUri, jsonString, {
+        encoding: FileSystem.EncodingType.UTF8,
+      });
+    } catch {
+      return { ok: false, errorCode: 'write_failed' };
+    }
+
+    let shared = false;
+
+    if (await Sharing.isAvailableAsync()) {
+      try {
+        await Sharing.shareAsync(fileUri, {
+          mimeType: 'application/json',
+          dialogTitle: 'Gerar Backup Completo',
+          UTI: 'public.json',
+        });
+        shared = true;
+      } catch {
+        shared = false;
+      }
+    }
+
+    if (!shared) {
+      try {
+        await Share.share({
+          title: 'Backup do SeuGestor',
+          message: fileUri,
+          url: fileUri,
+        });
+        shared = true;
+      } catch {
+        shared = false;
+      }
+    }
+
+    return { ok: true, fileUri, shared };
   } catch {
-    Alert.alert(
-      'Falha ao exportar',
-      'Nao foi possivel gerar o backup neste momento.'
-    );
+    return { ok: false, errorCode: 'write_failed' };
   }
 };
 
-export const importData = async (jsonString: string): Promise<boolean> => {
+export const importData = async (jsonString: string): Promise<ImportDataResult> => {
+  let parsed: unknown;
+
   try {
-    const parsed = JSON.parse(jsonString) as unknown;
-
-    if (!isValidBackupPayload(parsed)) {
-      Alert.alert(
-        'Arquivo invalido',
-        'O JSON informado nao possui a estrutura esperada do backup.'
-      );
-      return false;
-    }
-
-    return await new Promise<boolean>((resolve) => {
-      Alert.alert(
-        'Restaurar dados?',
-        'Isso apagará os dados atuais e substituirá tudo pelo backup selecionado.',
-        [
-          {
-            text: 'Cancelar',
-            style: 'cancel',
-            onPress: () => resolve(false),
-          },
-          {
-            text: 'Restaurar',
-            style: 'destructive',
-            onPress: () => {
-              useFinanceStore.setState({
-                hasCompletedOnboarding: parsed.hasCompletedOnboarding,
-                lastSyncDate: parsed.lastSyncDate,
-                currentWorkspaceId: parsed.currentWorkspaceId,
-                workspaces: parsed.workspaces,
-                transactions: parsed.transactions,
-                categories: parsed.categories,
-                recurringTemplates: parsed.recurringTemplates,
-              });
-
-              resolve(true);
-            },
-          },
-        ]
-      );
-    });
+    parsed = JSON.parse(jsonString) as unknown;
   } catch {
-    Alert.alert(
-      'Falha ao restaurar',
-      'O arquivo selecionado nao e um JSON valido.'
-    );
-    return false;
+    return { ok: false, errorCode: 'invalid_json' };
+  }
+
+  if (!isValidBackupPayload(parsed)) {
+    return { ok: false, errorCode: 'invalid_structure' };
+  }
+
+  try {
+    const previousWorkspaceId = useFinanceStore.getState().currentWorkspaceId;
+    const restoredWorkspaces = parsed.workspaces.map((workspace) => ({
+      ...workspace,
+      creditCards: (workspace as any).creditCards || [],
+    }));
+
+    const resolvedWorkspaceId = restoredWorkspaces.some(
+      (workspace) => workspace.id === previousWorkspaceId
+    )
+      ? previousWorkspaceId
+      : parsed.currentWorkspaceId;
+
+    useFinanceStore.setState({
+      hasCompletedOnboarding: parsed.hasCompletedOnboarding,
+      hasCompletedGoogleLinkPrompt:
+        parsed.hasCompletedGoogleLinkPrompt ?? false,
+      hasCompletedQuiz: parsed.hasCompletedQuiz ?? false,
+      hideBalances: parsed.hideBalances ?? true,
+      hasSeenDashboardTour:
+        parsed.hasSeenDashboardTour ?? parsed.hasSeenTour ?? false,
+      hasSeenCardsTour: parsed.hasSeenCardsTour ?? false,
+      hasSeenReportsTour: parsed.hasSeenReportsTour ?? false,
+      userProfile: parsed.userProfile || {},
+      googleLinkedName: parsed.googleLinkedName || '',
+      googleLinkedEmail: parsed.googleLinkedEmail || '',
+      googleLinkedPhotoUrl: parsed.googleLinkedPhotoUrl || '',
+      lastSyncDate: parsed.lastSyncDate,
+      nightlyAutoBackupEnabled: parsed.nightlyAutoBackupEnabled ?? false,
+      nightlyAutoBackupHour: parsed.nightlyAutoBackupHour ?? 22,
+      nightlyAutoBackupActivatedAt: parsed.nightlyAutoBackupActivatedAt ?? '',
+      lastAutoBackupAt: parsed.lastAutoBackupAt ?? '',
+      currentWorkspaceId: resolvedWorkspaceId,
+      workspaces: restoredWorkspaces,
+      transactions: parsed.transactions.map((transaction) => ({
+        paymentMethod: 'cash',
+        excludeFromCharts: false,
+        ...transaction,
+      })),
+      categories: parsed.categories,
+      recurringTemplates: parsed.recurringTemplates,
+    });
+
+    return { ok: true };
+  } catch {
+    return { ok: false, errorCode: 'apply_failed' };
   }
 };

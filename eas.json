@@ -8,7 +8,8 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_GEMINI_API_KEY": "AIzaSyCwIq-pBDtsy1lYIuiCRCZ1OBn6HZn-C7A"
+        "EXPO_PUBLIC_GEMINI_API_KEY": "AIzaSyCwIq-pBDtsy1lYIuiCRCZ1OBn6HZn-C7A",
+        "EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID": "822719331832-mscfrmdbep64tlphcjimpj8qsj7s3ha5.apps.googleusercontent.com"
       }
     },
     "production": {}

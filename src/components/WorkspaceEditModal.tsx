@@ -1,7 +1,10 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
+  KeyboardAvoidingView,
   Modal,
+  Platform,
   Pressable,
   StyleSheet,
   Text,
@@ -11,6 +14,7 @@ import {
 } from 'react-native';
 
 import type { Workspace } from '../types/finance.types';
+import { uppercaseFirstLetter } from '../utils/textInputFormat';
 
 const APP_BG = '#0A0A0A';
 const CARD_BG = '#121212';
@@ -43,6 +47,7 @@ export const WorkspaceEditModal: React.FC<WorkspaceEditModalProps> = ({
   onSave,
   onClose,
 }) => {
+  const { t } = useTranslation();
   const [name, setName] = useState<string>('');
   const [selectedColor, setSelectedColor] = useState<string>(COLOR_PRESETS[0] || '#0A84FF');
   const [workspaceType, setWorkspaceType] = useState<'personal' | 'business'>(
@@ -78,12 +83,17 @@ export const WorkspaceEditModal: React.FC<WorkspaceEditModalProps> = ({
       animationType="fade"
       onRequestClose={onClose}
     >
-      <View style={styles.overlay}>
-        <View style={[styles.modal, { backgroundColor: CARD_BG }]}>
+      <KeyboardAvoidingView
+        style={styles.keyboardAvoiding}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={8}
+      >
+        <View style={styles.overlay}>
+          <View style={[styles.modal, { backgroundColor: CARD_BG }]}>
           {/* Header */}
           <View style={styles.header}>
             <Text style={[styles.title, { color: TEXT_PRIMARY }]}>
-              {mode === 'create' ? 'Novo Negócio' : 'Editar Ambiente'}
+              {mode === 'create' ? t('workspaceModal.createTitle') : t('workspaceModal.editTitle')}
             </Text>
             <Pressable onPress={onClose}>
               <MaterialCommunityIcons
@@ -96,12 +106,13 @@ export const WorkspaceEditModal: React.FC<WorkspaceEditModalProps> = ({
 
           <ScrollView
             showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
             contentContainerStyle={styles.content}
           >
             {/* Name Input */}
             <View style={styles.section}>
               <Text style={[styles.label, { color: TEXT_PRIMARY }]}>
-                Nome do Ambiente
+                {t('workspaceModal.name')}
               </Text>
               <TextInput
                 style={[
@@ -112,10 +123,11 @@ export const WorkspaceEditModal: React.FC<WorkspaceEditModalProps> = ({
                     borderColor: selectedColor,
                   },
                 ]}
-                placeholder="Ex: Indikcon, Snackscoffee..."
+                placeholder={t('workspaceModal.namePlaceholder')}
                 placeholderTextColor={TEXT_SECONDARY}
                 value={name}
-                onChangeText={setName}
+                onChangeText={(value) => setName(uppercaseFirstLetter(value))}
+                autoCapitalize="sentences"
               />
             </View>
 
@@ -123,7 +135,7 @@ export const WorkspaceEditModal: React.FC<WorkspaceEditModalProps> = ({
             {mode === 'create' && (
               <View style={styles.section}>
                 <Text style={[styles.label, { color: TEXT_PRIMARY }]}>
-                  Tipo de Ambiente
+                  {t('workspaceModal.type')}
                 </Text>
                 <View style={styles.typeRow}>
                   <Pressable
@@ -162,7 +174,7 @@ export const WorkspaceEditModal: React.FC<WorkspaceEditModalProps> = ({
                         },
                       ]}
                     >
-                      Pessoa Física
+                      {t('settings.workspacePersonal')}
                     </Text>
                   </Pressable>
 
@@ -202,7 +214,7 @@ export const WorkspaceEditModal: React.FC<WorkspaceEditModalProps> = ({
                         },
                       ]}
                     >
-                      Pessoa Jurídica
+                      {t('settings.workspaceBusiness')}
                     </Text>
                   </Pressable>
                 </View>
@@ -212,7 +224,7 @@ export const WorkspaceEditModal: React.FC<WorkspaceEditModalProps> = ({
             {/* Color Selection */}
             <View style={styles.section}>
               <Text style={[styles.label, { color: TEXT_PRIMARY }]}>
-                Cor do Tema
+                {t('workspaceModal.themeColor')}
               </Text>
               <View style={styles.colorGrid}>
                 {COLOR_PRESETS.map((color) => (
@@ -261,7 +273,7 @@ export const WorkspaceEditModal: React.FC<WorkspaceEditModalProps> = ({
                   color: selectedColor === '#FFD60A' ? '#000' : '#FFF',
                 }}
               >
-                Salvar
+                {t('workspaceModal.save')}
               </Text>
             </Pressable>
 
@@ -270,17 +282,21 @@ export const WorkspaceEditModal: React.FC<WorkspaceEditModalProps> = ({
               onPress={onClose}
             >
               <Text style={[styles.cancelButtonText, { color: TEXT_SECONDARY }]}>
-                Cancelar
+                {t('settings.cancel')}
               </Text>
             </Pressable>
           </View>
+          </View>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </Modal>
   );
 };
 
 const styles = StyleSheet.create({
+  keyboardAvoiding: {
+    flex: 1,
+  },
   overlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.8)',
