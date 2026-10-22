@@ -2,37 +2,40 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
 import {
   Pressable,
+  StyleProp,
   StyleSheet,
   Text,
   View,
+  ViewStyle,
 } from 'react-native';
 
 import { getThemeTokens } from '../../styles/themes';
 import { useThemeStore } from '../../store/useFinanceStore';
 
-interface ChatbotFloatingButtonProps {
+export interface ChatbotFloatingButtonProps {
   onPress: () => void;
   bottomOffset?: number;
+  style?: StyleProp<ViewStyle>;
 }
 
-export const ChatbotFloatingButton: React.FC<ChatbotFloatingButtonProps> = ({
-  onPress,
-  bottomOffset = 80,
-}) => {
-  const theme = useThemeStore((state) => state.theme);
-  const tokens = getThemeTokens(theme);
+export const ChatbotFloatingButton = React.forwardRef<View, ChatbotFloatingButtonProps>(
+  ({ onPress, bottomOffset = 80, style }, ref) => {
+    const theme = useThemeStore((state) => state.theme);
+    const tokens = getThemeTokens(theme);
 
-  return (
-    <Pressable
-      style={({ pressed }) => [
-        styles.floatingButton,
-        {
-          bottom: bottomOffset,
-          backgroundColor: theme === 'dark' ? '#0D1929' : '#EFF6FF',
-          borderColor: tokens.primary,
-          transform: [{ scale: pressed ? 0.94 : 1 }],
-        },
-      ]}
+    return (
+      <Pressable
+        ref={ref}
+        style={({ pressed }) => [
+          styles.floatingButton,
+          {
+            bottom: bottomOffset,
+            backgroundColor: theme === 'dark' ? '#0D1929' : '#EFF6FF',
+            borderColor: tokens.primary,
+            transform: [{ scale: pressed ? 0.94 : 1 }],
+          },
+          style,
+        ]}
       onPress={onPress}
       accessibilityRole="button"
       accessibilityLabel="Abrir bate-papo com Consultor Financeiro Inteligente"
@@ -58,7 +61,9 @@ export const ChatbotFloatingButton: React.FC<ChatbotFloatingButtonProps> = ({
       </View>
     </Pressable>
   );
-};
+});
+
+ChatbotFloatingButton.displayName = 'ChatbotFloatingButton';
 
 const styles = StyleSheet.create({
   floatingButton: {

@@ -192,6 +192,11 @@
     "privacyPolicy": "Privacy Policy",
     "privacyPolicySubtitle": "Open the privacy document published for the stores.",
     "openPrivacyPolicy": "Open policy",
+    "restartTourButton": "Restart Guided Tour",
+    "restartTourSubtitle": "Replay interactive walkthrough and new app features",
+    "restartTourTitle": "Restart Guided Tour?",
+    "restartTourMessage": "The interactive walkthrough will be reset so you can review key features and updates.",
+    "restartTourConfirm": "Start Tour",
     "deleteAccountData": "Delete Account and Data",
     "deleteAccountDataSubtitle": "Removes your financial records and app preferences from this device.",
     "deleteAccountAction": "Delete Everything",
@@ -246,30 +251,45 @@
   },
   "tour": {
     "tooltip": {
-      "title": "App guide",
+      "title": "App Guide",
       "stepLabel": "Step {{current}} of {{total}}",
       "next": "Next",
       "skip": "Skip",
       "finish": "Finish",
       "previous": "Back"
     },
+    "titles": {
+      "balance": "Monthly Overview & Balance",
+      "ai": "Smart Spending Analysis",
+      "advisor": "AI Financial Advisor",
+      "add": "Smart Quick Add",
+      "transactions": "Statement & Recent Activity",
+      "reportsNav": "Reports & Performance",
+      "cardsCreate": "Add New Credit Card",
+      "cardsList": "Invoices & Real-time Limit",
+      "cardsPay": "Invoice Payment",
+      "reportsDre": "Consolidated Monthly Result",
+      "reportsCharts": "Expense Distribution"
+    },
     "dashboard": {
-      "add": "Tap the + button to register income or expense in seconds. You can type or use voice to fill it automatically.",
-      "accounts": "Here you can see the current workspace balance and a summary of upcoming expenses to act before cash gets tight.",
-      "ai": "In this section, you get smart insights to reduce waste and improve margin based on this month's activity.",
+      "balance": "Track your consolidated balance, monthly income, and expenses in real time with total cash flow control.",
+      "accounts": "Track your consolidated balance, monthly income, and expenses in real time with total cash flow control.",
+      "ai": "Tap this card to receive a comprehensive diagnostic of your finances and chat directly with your AI Advisor on opportunities to cut expenses and invest.",
+      "advisor": "Your 24/7 personal financial advisor. Ask about stocks, fixed income, real estate mortgages, pensions, and wealth management strategies.",
+      "add": "Add income and expenses in seconds by typing or using natural voice input (e.g., 'Spent 50 on lunch') with automatic categorization.",
+      "transactions": "Chronological transaction history. Tap any item to easily edit amount, category, or installments.",
       "transactionsEmpty": "When you add income and expenses, your transactions will appear here in chronological order for quick edits.",
-      "transactions": "Your quick statement appears in this area. Tap a transaction to edit amount, description, and category without leaving the home screen.",
-      "reportsNav": "In the bottom menu, tap here to open Reports and track charts and cash performance.",
+      "reportsNav": "Review category breakdown charts, consolidated statements, and export professional reports in PDF and CSV.",
       "cardsNav": "Tap here to manage your credit cards, track invoices, and keep your limit under control."
     },
     "reports": {
-      "dre": "This block shows your summarized income statement: revenue, expenses, and net profit for the active workspace.",
-      "charts": "Here you can view expense distribution charts and compare spending against each category limit."
+      "dre": "Executive overview: total revenues, expenses, and net result (surplus or deficit) for the active workspace.",
+      "charts": "Visually identify where your money is going and which expense categories need attention."
     },
     "cards": {
-      "create": "Start here to register a new card with limit, closing day, and due date.",
-      "list": "Cards appear here with real-time limit usage. Tap a card to open its invoice by cycle.",
-      "pay": "After reviewing invoice transactions, use this button to pay it from a debit account."
+      "create": "Register your credit cards by setting total limit, closing day, and invoice due date.",
+      "list": "Track limit usage in real time and tap any card to view transactions and upcoming invoice projections.",
+      "pay": "Pay invoices partially or in full by debiting directly from one of your linked accounts."
     }
   },
   "lock": {

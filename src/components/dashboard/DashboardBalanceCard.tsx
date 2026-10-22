@@ -51,9 +51,12 @@ export const DashboardBalanceCard: React.FC<DashboardBalanceCardProps> = ({
   return (
     <CopilotStep
       active={isFocused}
-      text={t('tour.dashboard.accounts', { defaultValue: 'Suas contas' })}
-      order={2}
-      name="dashboard_accounts"
+      text={t('tour.dashboard.balance', {
+        defaultValue:
+          'Acompanhe seu saldo consolidado, total de receitas e despesas do mês em tempo real, com total controle do seu fluxo de caixa.',
+      })}
+      order={1}
+      name="dashboard_balance"
     >
       <WalkthroughableView>
         <View style={[styles.heroCard, { backgroundColor: cardBg, borderColor }]}>

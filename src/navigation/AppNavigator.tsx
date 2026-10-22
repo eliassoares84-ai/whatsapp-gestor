@@ -287,7 +287,7 @@ export const AppNavigator: React.FC = () => {
               <CopilotStep
                 active={isDashboardContext}
                 text={t('tour.dashboard.reportsNav')}
-                order={5}
+                order={6}
                 name="dashboard_reports_nav"
               >
                 <WalkthroughableView>{iconEl}</WalkthroughableView>

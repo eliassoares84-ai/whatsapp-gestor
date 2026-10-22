@@ -1,5 +1,5 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system/legacy';
 import React, { useMemo, useState } from 'react';
@@ -93,7 +93,9 @@ export const SettingsScreen: React.FC = () => {
     resetGoogleLinkPrompt,
     isPremium,
     togglePremiumStatus,
+    resetTour,
   } = useFinanceStore();
+  const navigation = useNavigation<any>();
 
   const { syncBackupToCloud } = useGoogleDriveService();
 
@@ -455,6 +457,30 @@ export const SettingsScreen: React.FC = () => {
     }
   };
 
+  const handleRestartTour = () => {
+    Alert.alert(
+      t('settings.restartTourTitle', { defaultValue: 'Reiniciar Tour Guiado?' }),
+      t('settings.restartTourMessage', {
+        defaultValue:
+          'O tour interativo do aplicativo será reiniciado para que você possa rever os principais recursos e novidades.',
+      }),
+      [
+        {
+          text: t('settings.cancel', { defaultValue: 'Cancelar' }),
+          style: 'cancel',
+        },
+        {
+          text: t('settings.restartTourConfirm', { defaultValue: 'Iniciar Tour' }),
+          style: 'default',
+          onPress: () => {
+            resetTour();
+            navigation.navigate('Home');
+          },
+        },
+      ]
+    );
+  };
+
   if (isBackupScreenVisible) {
     return <BackupScreen onBack={() => setIsBackupScreenVisible(false)} />;
   }
@@ -683,6 +709,24 @@ export const SettingsScreen: React.FC = () => {
         </View>
 
         <View style={styles.listContainer}>
+          <Pressable
+            style={[styles.compactRow, { backgroundColor: tokens.card, borderColor: tokens.border }]}
+            onPress={handleRestartTour}
+          >
+            <View style={[styles.iconWrap, { backgroundColor: tokens.primaryTonal }]}>
+              <MaterialCommunityIcons name="compass-outline" size={20} color={tokens.primary} />
+            </View>
+            <View style={styles.infoBlock}>
+              <Text style={[styles.itemName, { color: tokens.textPrimary }]}>
+                {t('settings.restartTourButton', { defaultValue: 'Reiniciar Tour Guiado' })}
+              </Text>
+              <Text style={[styles.itemSub, { color: tokens.textSecondary }]}>
+                {t('settings.restartTourSubtitle', { defaultValue: 'Rever o passo a passo interativo e novidades do app' })}
+              </Text>
+            </View>
+            <MaterialCommunityIcons name="chevron-right" size={20} color={tokens.textTertiary} />
+          </Pressable>
+
           <Pressable
             style={[styles.compactRow, { backgroundColor: tokens.card, borderColor: tokens.border }]}
             onPress={() => void handleSendSuggestion()}

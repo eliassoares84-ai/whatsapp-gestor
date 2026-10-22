@@ -35,6 +35,7 @@ import { deepLinkService } from '../services/deepLinkService';
 
 const WalkthroughableView = walkthroughable(View);
 const WalkthroughableTouchableOpacity = walkthroughable(TouchableOpacity);
+const WalkthroughableChatbotButton = walkthroughable(ChatbotFloatingButton);
 
 const stripInstallmentSuffix = (value: string): string => {
   return value.replace(/\s*\(\d+\/\d+\)\s*$/u, '').trim();
@@ -213,7 +214,7 @@ const DashboardScreenBase: React.FC = () => {
           return;
         }
         tourStartInFlightRef.current = true;
-        void start('dashboard_add').finally(() => {
+        void start('dashboard_balance').finally(() => {
           tourStartInFlightRef.current = false;
         });
       }, 900);
@@ -232,7 +233,7 @@ const DashboardScreenBase: React.FC = () => {
         return;
       }
       tourStartInFlightRef.current = true;
-      void start('dashboard_add').finally(() => {
+      void start('dashboard_balance').finally(() => {
         tourStartInFlightRef.current = false;
       });
     }, 1200);
@@ -621,8 +622,11 @@ const DashboardScreenBase: React.FC = () => {
 
         <CopilotStep
           active={isFocused}
-          text={t('tour.dashboard.ai', { defaultValue: 'Insights IA' })}
-          order={4}
+          text={t('tour.dashboard.ai', {
+            defaultValue:
+              'Toque neste card para receber um diagnóstico 360° das suas finanças e conversar diretamente com o Consultor IA sobre oportunidades de economia e investimentos.',
+          })}
+          order={2}
           name="dashboard_ai"
         >
           <WalkthroughableView>
@@ -658,21 +662,34 @@ const DashboardScreenBase: React.FC = () => {
       </ScrollView>
 
       {/* Botão Flutuante do Consultor Financeiro IA */}
-      <ChatbotFloatingButton
-        bottomOffset={fabBottomOffset + 12}
-        onPress={() => {
-          if (!isPremium) {
-            setIsPaywallVisible(true);
-          } else {
-            setIsChatModalVisible(true);
-          }
-        }}
-      />
+      <CopilotStep
+        active={isFocused}
+        text={t('tour.dashboard.advisor', {
+          defaultValue:
+            'Seu consultor financeiro 24h. Tire dúvidas sobre ações, Tesouro Selic/IPCA+, SAC vs Price no financiamento imobiliário e estratégias patrimoniais.',
+        })}
+        order={3}
+        name="dashboard_advisor"
+      >
+        <WalkthroughableChatbotButton
+          bottomOffset={fabBottomOffset + 12}
+          onPress={() => {
+            if (!isPremium) {
+              setIsPaywallVisible(true);
+            } else {
+              setIsChatModalVisible(true);
+            }
+          }}
+        />
+      </CopilotStep>
 
       <CopilotStep
         active={isFocused}
-        text={t('tour.dashboard.add', { defaultValue: 'Novo Lançamento' })}
-        order={1}
+        text={t('tour.dashboard.add', {
+          defaultValue:
+            'Adicione novas receitas e despesas em segundos digitando ou por comando de voz natural (ex: "Gastei 50 no almoço"), com preenchimento inteligente.',
+        })}
+        order={4}
         name="dashboard_add"
       >
         <WalkthroughableTouchableOpacity

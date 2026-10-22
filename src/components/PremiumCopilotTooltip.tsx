@@ -7,6 +7,75 @@ import { useThemeStore } from '../store/useFinanceStore';
 import { getThemeTokens } from '../styles/themes';
 import { useCopilot } from '../utils/copilotSafe';
 
+type StepMeta = {
+  titleKey: string;
+  defaultTitle: string;
+  icon: keyof typeof MaterialCommunityIcons.glyphMap;
+};
+
+const STEP_META: Record<string, StepMeta> = {
+  dashboard_balance: {
+    titleKey: 'tour.titles.balance',
+    defaultTitle: 'Visão Geral & Saldo do Mês',
+    icon: 'wallet-outline',
+  },
+  dashboard_accounts: {
+    titleKey: 'tour.titles.balance',
+    defaultTitle: 'Visão Geral & Saldo do Mês',
+    icon: 'wallet-outline',
+  },
+  dashboard_ai: {
+    titleKey: 'tour.titles.ai',
+    defaultTitle: 'Análise Inteligente de Gastos',
+    icon: 'creation',
+  },
+  dashboard_advisor: {
+    titleKey: 'tour.titles.advisor',
+    defaultTitle: 'Consultor Financeiro por IA',
+    icon: 'brain',
+  },
+  dashboard_add: {
+    titleKey: 'tour.titles.add',
+    defaultTitle: 'Novo Lançamento Inteligente',
+    icon: 'plus-circle-outline',
+  },
+  dashboard_transactions: {
+    titleKey: 'tour.titles.transactions',
+    defaultTitle: 'Extrato & Últimas Movimentações',
+    icon: 'format-list-bulleted',
+  },
+  dashboard_reports_nav: {
+    titleKey: 'tour.titles.reportsNav',
+    defaultTitle: 'Relatórios & Desempenho',
+    icon: 'chart-bar',
+  },
+  cards_create: {
+    titleKey: 'tour.titles.cardsCreate',
+    defaultTitle: 'Cadastrar Novo Cartão',
+    icon: 'credit-card-plus-outline',
+  },
+  cards_list: {
+    titleKey: 'tour.titles.cardsList',
+    defaultTitle: 'Faturas & Limite em Tempo Real',
+    icon: 'credit-card-outline',
+  },
+  cards_pay: {
+    titleKey: 'tour.titles.cardsPay',
+    defaultTitle: 'Pagamento de Fatura',
+    icon: 'credit-card-check-outline',
+  },
+  reports_dre: {
+    titleKey: 'tour.titles.reportsDre',
+    defaultTitle: 'Resultado Mensal Consolidado',
+    icon: 'file-document-outline',
+  },
+  reports_charts: {
+    titleKey: 'tour.titles.reportsCharts',
+    defaultTitle: 'Distribuição por Categorias',
+    icon: 'chart-pie',
+  },
+};
+
 interface PremiumCopilotTooltipProps {
   labels?: {
     skip?: string;
@@ -47,6 +116,13 @@ export const PremiumCopilotTooltip: React.FC<PremiumCopilotTooltipProps> = ({ la
   const nextLabel = labels?.next || t('tour.tooltip.next', { defaultValue: 'Próximo' });
   const finishLabel = labels?.finish || t('tour.tooltip.finish', { defaultValue: 'Concluir' });
 
+  const stepName = currentStep?.name || '';
+  const meta = STEP_META[stepName];
+  const stepTitle = meta
+    ? t(meta.titleKey, { defaultValue: meta.defaultTitle })
+    : t('tour.tooltip.title', { defaultValue: 'Guia do App' });
+  const stepIcon = meta?.icon || 'compass-outline';
+
   return (
     <View
       style={[
@@ -70,7 +146,7 @@ export const PremiumCopilotTooltip: React.FC<PremiumCopilotTooltipProps> = ({ la
               },
             ]}
           >
-            <MaterialCommunityIcons name="compass-outline" size={13} color={tokens.primary} style={{ marginRight: 4 }} />
+            <MaterialCommunityIcons name={stepIcon} size={13} color={tokens.primary} style={{ marginRight: 4 }} />
             <Text style={[styles.stepBadgeText, { color: tokens.primary }]}>
               {t('tour.tooltip.stepLabel', {
                 current: currentStepNumber,
@@ -92,7 +168,7 @@ export const PremiumCopilotTooltip: React.FC<PremiumCopilotTooltipProps> = ({ la
 
       {/* Main Title & Description */}
       <Text style={[styles.title, { color: tokens.textPrimary }]}>
-        {t('tour.tooltip.title', { defaultValue: 'Guia do App' })}
+        {stepTitle}
       </Text>
       
       <Text style={[styles.description, { color: tokens.textSecondary }]}>

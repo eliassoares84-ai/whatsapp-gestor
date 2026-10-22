@@ -213,8 +213,11 @@ export const DashboardRecentTransactions: React.FC<DashboardRecentTransactionsPr
   return (
     <CopilotStep
       active={isFocused}
-      text={t('tour.dashboard.transactions', { defaultValue: 'Histórico' })}
-      order={3}
+      text={t('tour.dashboard.transactions', {
+        defaultValue:
+          'Histórico das movimentações organizadas em ordem cronológica. Toque em qualquer lançamento para editar valor, categoria ou parcelas.',
+      })}
+      order={5}
       name="dashboard_transactions"
     >
       <WalkthroughableView>

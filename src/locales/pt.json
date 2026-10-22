@@ -192,6 +192,11 @@
     "privacyPolicy": "Política de Privacidade",
     "privacyPolicySubtitle": "Abra o documento de privacidade publicado para a loja.",
     "openPrivacyPolicy": "Abrir política",
+    "restartTourButton": "Reiniciar Tour Guiado",
+    "restartTourSubtitle": "Rever o passo a passo interativo e novidades do app",
+    "restartTourTitle": "Reiniciar Tour Guiado?",
+    "restartTourMessage": "O tour interativo do aplicativo será reiniciado para que você possa rever os principais recursos e novidades.",
+    "restartTourConfirm": "Iniciar Tour",
     "deleteAccountData": "Excluir Minha Conta e Dados",
     "deleteAccountDataSubtitle": "Apaga deste dispositivo seus registros financeiros e preferências deste app.",
     "deleteAccountAction": "Excluir Tudo",
@@ -253,23 +258,38 @@
       "finish": "Concluir",
       "previous": "Voltar"
     },
+    "titles": {
+      "balance": "Visão Geral & Saldo do Mês",
+      "ai": "Análise Inteligente de Gastos",
+      "advisor": "Consultor Financeiro por IA",
+      "add": "Novo Lançamento Inteligente",
+      "transactions": "Extrato & Últimas Movimentações",
+      "reportsNav": "Relatórios & Desempenho",
+      "cardsCreate": "Cadastrar Novo Cartão",
+      "cardsList": "Faturas & Limite em Tempo Real",
+      "cardsPay": "Pagamento de Fatura",
+      "reportsDre": "Resultado Mensal Consolidado",
+      "reportsCharts": "Distribuição por Categorias"
+    },
     "dashboard": {
-      "add": "Toque no botão + para registrar receita ou despesa em segundos. Você pode digitar ou usar voz para preencher automaticamente.",
-      "accounts": "Aqui você enxerga o saldo atual do workspace e o resumo de despesas dos próximos dias para agir antes de faltar caixa.",
-      "ai": "Neste bloco você recebe análises inteligentes para reduzir desperdícios e melhorar margem com base nas movimentações do mês.",
+      "balance": "Acompanhe seu saldo consolidado, total de receitas e despesas do mês em tempo real, com total controle do seu fluxo de caixa.",
+      "accounts": "Acompanhe seu saldo consolidado, total de receitas e despesas do mês em tempo real, com total controle do seu fluxo de caixa.",
+      "ai": "Toque neste card para receber um diagnóstico 360° das suas finanças e conversar diretamente com o Consultor IA sobre oportunidades de economia e investimentos.",
+      "advisor": "Seu consultor financeiro 24h. Tire dúvidas sobre ações, Tesouro Selic/IPCA+, SAC vs Price no financiamento imobiliário e estratégias patrimoniais.",
+      "add": "Adicione novas receitas e despesas em segundos digitando ou por comando de voz natural (ex: \"Gastei 50 no almoço\"), com preenchimento inteligente.",
+      "transactions": "Histórico das movimentações organizadas em ordem cronológica. Toque em qualquer lançamento para editar valor, categoria ou parcelas.",
       "transactionsEmpty": "Quando você lançar entradas e saídas, suas movimentações vão aparecer aqui em ordem cronológica para edição rápida.",
-      "transactions": "Seu extrato rápido fica nesta área. Toque em uma movimentação para editar valor, descrição e categoria sem sair da tela inicial.",
-      "reportsNav": "No menu inferior, toque aqui para abrir os Relatórios e acompanhar gráficos e desempenho do caixa.",
+      "reportsNav": "Acompanhe gráficos de consumo por categoria, balanço financeiro consolidado e exporte relatórios profissionais em PDF e CSV.",
       "cardsNav": "Toque aqui para gerir seus Cartões de Crédito, acompanhar faturas e manter o limite sob controle."
     },
     "reports": {
-      "dre": "Este bloco mostra seu DRE resumido: receita, despesas e lucro líquido do workspace ativo.",
-      "charts": "Aqui você visualiza os gráficos de distribuição de despesas e compara consumo com o limite de cada categoria."
+      "dre": "Visão executiva do período: total de receitas, despesas e o resultado líquido (superávit ou déficit) do workspace ativo.",
+      "charts": "Identifique visualmente no gráfico para onde está indo o seu dinheiro e quais categorias demandam maior atenção."
     },
     "cards": {
-      "create": "Comece por aqui para cadastrar um novo cartão com limite, fechamento e vencimento.",
-      "list": "Os cartões aparecem aqui com uso de limite em tempo real. Toque em um cartão para abrir a fatura por competência.",
-      "pay": "Depois de revisar os lançamentos da fatura, use este botão para efetuar o pagamento com uma conta de débito."
+      "create": "Cadastre seus cartões de crédito definindo limite total, dia de fechamento e dia de vencimento da fatura.",
+      "list": "Acompanhe o consumo do limite em tempo real e toque em qualquer cartão para ver os lançamentos e a projeção das faturas.",
+      "pay": "Efetue o pagamento parcial ou integral da fatura debitando diretamente de uma das suas contas cadastradas."
     }
   },
   "lock": {

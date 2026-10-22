@@ -114,7 +114,7 @@ const isSameMonth = (dateA: Date, dateB: Date): boolean =>
   dateA.getMonth() === dateB.getMonth() &&
   dateA.getFullYear() === dateB.getFullYear();
 
-export const TOUR_GUIDE_VERSION = 4;
+export const TOUR_GUIDE_VERSION = 5;
 
 export type QuizFocus = 'Sair das Dívidas' | 'Poupar/Investir' | 'Gerir Negócio';
 export type QuizScope = 'Vida Pessoal' | 'Empresa/Serviços' | 'Ambos';
@@ -136,6 +136,7 @@ export interface FinanceState {
   hasSeenDashboardTour: boolean;
   hasSeenCardsTour: boolean;
   hasSeenReportsTour: boolean;
+  hasSeenTourVersion?: number;
   userProfile: UserProfile;
   googleLinkedName: string;
   googleLinkedEmail: string;
@@ -164,6 +165,7 @@ export interface FinanceActions {
   markDashboardTourSeen: () => void;
   markCardsTourSeen: () => void;
   markReportsTourSeen: () => void;
+  resetTour: () => void;
   saveUserProfile: (results: UserProfile) => void;
   completeGoogleLinkPrompt: (email?: string, photoUrl?: string, name?: string) => void;
   reopenGoogleLinkPrompt: () => void;
@@ -278,6 +280,7 @@ const createInitialFinanceState = (): FinanceState => ({
   hasSeenDashboardTour: false,
   hasSeenCardsTour: false,
   hasSeenReportsTour: false,
+  hasSeenTourVersion: TOUR_GUIDE_VERSION,
   userProfile: {},
   googleLinkedName: '',
   googleLinkedEmail: '',
@@ -420,9 +423,22 @@ const sanitizeFinancePersistedState = (
     ),
     hasCompletedQuiz: asBoolean(source.hasCompletedQuiz, currentState.hasCompletedQuiz),
     hideBalances: true, // sempre inicia com privacidade ativada ao abrir o app
-    hasSeenDashboardTour: asBoolean(source.hasSeenDashboardTour, currentState.hasSeenDashboardTour),
-    hasSeenCardsTour: asBoolean(source.hasSeenCardsTour, currentState.hasSeenCardsTour),
-    hasSeenReportsTour: asBoolean(source.hasSeenReportsTour, currentState.hasSeenReportsTour),
+    hasSeenDashboardTour:
+      typeof source.hasSeenTourVersion === 'number' && source.hasSeenTourVersion >= TOUR_GUIDE_VERSION
+        ? asBoolean(source.hasSeenDashboardTour, currentState.hasSeenDashboardTour)
+        : false,
+    hasSeenCardsTour:
+      typeof source.hasSeenTourVersion === 'number' && source.hasSeenTourVersion >= TOUR_GUIDE_VERSION
+        ? asBoolean(source.hasSeenCardsTour, currentState.hasSeenCardsTour)
+        : false,
+    hasSeenReportsTour:
+      typeof source.hasSeenTourVersion === 'number' && source.hasSeenTourVersion >= TOUR_GUIDE_VERSION
+        ? asBoolean(source.hasSeenReportsTour, currentState.hasSeenReportsTour)
+        : false,
+    hasSeenTourVersion:
+      typeof source.hasSeenTourVersion === 'number' && source.hasSeenTourVersion >= TOUR_GUIDE_VERSION
+        ? source.hasSeenTourVersion
+        : 0,
     userProfile: sanitizeUserProfile(source.userProfile),
     googleLinkedName: asString(source.googleLinkedName, currentState.googleLinkedName),
     googleLinkedEmail: asString(source.googleLinkedEmail, currentState.googleLinkedEmail),
@@ -551,18 +567,30 @@ export const useFinanceStore = create<FinanceStore>()(
       markDashboardTourSeen: () => {
         set({
           hasSeenDashboardTour: true,
+          hasSeenTourVersion: TOUR_GUIDE_VERSION,
         });
       },
 
       markCardsTourSeen: () => {
         set({
           hasSeenCardsTour: true,
+          hasSeenTourVersion: TOUR_GUIDE_VERSION,
         });
       },
 
       markReportsTourSeen: () => {
         set({
           hasSeenReportsTour: true,
+          hasSeenTourVersion: TOUR_GUIDE_VERSION,
+        });
+      },
+
+      resetTour: () => {
+        set({
+          hasSeenDashboardTour: false,
+          hasSeenCardsTour: false,
+          hasSeenReportsTour: false,
+          hasSeenTourVersion: 0,
         });
       },
 
