@@ -30,6 +30,7 @@ interface FinancialChatModalProps {
 }
 
 const QUICK_SUGGESTIONS = [
+  '📊 Analisar gastos do mês',
   'SAC vs Price no Financiamento',
   'Holding Familiar: quando compensa?',
   'PGBL ou VGBL para meu IR?',

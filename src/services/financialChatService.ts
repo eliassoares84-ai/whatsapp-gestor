@@ -7,14 +7,32 @@ export interface ChatMessage {
   timestamp: number;
 }
 
+export interface UserFinancialCategoryBreakdown {
+  name: string;
+  amount: number;
+  percentage: number;
+}
+
+export interface UserFinancialExpenseItem {
+  note: string;
+  category: string;
+  amount: number;
+}
+
 export interface UserFinancialContext {
   currentBalance?: number;
   monthlyIncome?: number;
   monthlyExpense?: number;
+  netSavings?: number;
+  savingsRate?: number;
   currency?: string;
   localeTag?: string;
   workspaceType?: 'personal' | 'business';
-  topCategories?: { name: string; amount: number }[];
+  selectedMonthName?: string;
+  selectedYear?: number;
+  topCategories?: UserFinancialCategoryBreakdown[];
+  largestExpenses?: UserFinancialExpenseItem[];
+  transactionCount?: number;
 }
 
 const CANDIDATE_MODELS = [
@@ -87,6 +105,16 @@ DIRETRIZES LEGAIS E REGULATÓRIAS OBRIGATÓRIAS:
 - Se o usuário perguntar diretamente se você possui certificação ou se é certificado (por exemplo, se você é CFP®), esclareça com simpatia e clareza que você é um consultor financeiro baseado em inteligência artificial do SeuGestor, munido de conhecimentos avançados de planejamento patrimonial 360°, mas que não possui certificação formal, licença regulamentada ou registro profissional de pessoa física.
 - Suas orientações possuem caráter educativo, analítico e de apoio a decisões financeiras, sempre preservando alto rigor técnico, matemático e estratégico.
 
+DIRETRIZ PARA ANÁLISE DE GASTOS DO MÊS (MODELO CONVERSACIONAL):
+Quando o usuário solicitar uma análise de gastos do mês, de despesas ou do orçamento:
+- Apresente uma radiografia profunda, elegante, humana e altamente didática em modelo de conversa, estruturada em:
+  1. Panorama do Mês: Apresente o balanço geral (Receitas vs Despesas), o Resultado Líquido e a Taxa de Poupança/Sobra percentual com tom acolhedor e encorajador.
+  2. Radiografia dos Maiores Gastos: Avalie as categorias que mais pesaram no orçamento. Identifique padrões de consumo, compare a distribuição com boas práticas de planejamento (como 50% essenciais / 30% estilo de vida / 20% poupança) e comente os maiores lançamentos individuais se houver.
+  3. Diagnóstico Estratégico & Investimentos:
+     - Se o saldo for positivo: Mostre com clareza onde alocar a sobra (ex: priorizar Reserva de Emergência no Tesouro Selic ou CDB 100% CDI com garantia do FGC se ainda não tiver 6 meses de custos garantidos; ou sugerir Tesouro IPCA+ / FIIs de dividendos se a reserva já estiver pronta).
+     - Se o saldo for negativo ou apertado: Indique cirurgicamente onde conter despesas sem terrorismo e sem perda de qualidade de vida.
+  4. Fechamento em Modelo de Bate-Papo: Termine sempre com uma pergunta aberta e amigável para continuar o diálogo e aprofundar (ex: "O que você achou desses pontos? Quer que eu te ajude a enxugar o gasto com [categoria] ou prefere simular uma meta de investimento para essa sobra?").
+
 DIRETRIZES DE PERSONA E COMUNICAÇÃO:
 - Fale como um consultor humano experiente, caloroso, parceiro, ágil e altamente didático. NUNCA soe como um robô, atendente padrão ou FAQ de banco.
 - NÃO coloque disclaimers burocráticos ou avisos de isenção em todas as respostas. Trate o usuário com naturalidade e respeito, orientando caminhos reais, riscos e vantagens práticas.
@@ -115,8 +143,14 @@ export const callFinancialAdvisorChat = async (
   let contextSnippet = '';
   if (userContext) {
     const parts: string[] = [];
+    if (userContext.selectedMonthName) {
+      parts.push(`Mês de referência: ${userContext.selectedMonthName} de ${userContext.selectedYear || new Date().getFullYear()}`);
+    }
+    if (userContext.workspaceType) {
+      parts.push(`Perfil da carteira: ${userContext.workspaceType === 'business' ? 'Pessoa Jurídica / Negócio (PJ)' : 'Pessoa Física / Finanças Pessoais (PF)'}`);
+    }
     if (userContext.currentBalance !== undefined) {
-      parts.push(`Saldo atual em conta: R$ ${userContext.currentBalance.toFixed(2)}`);
+      parts.push(`Saldo atual em contas: R$ ${userContext.currentBalance.toFixed(2)}`);
     }
     if (userContext.monthlyIncome !== undefined) {
       parts.push(`Receitas registradas este mês: R$ ${userContext.monthlyIncome.toFixed(2)}`);
@@ -124,19 +158,24 @@ export const callFinancialAdvisorChat = async (
     if (userContext.monthlyExpense !== undefined) {
       parts.push(`Despesas registradas este mês: R$ ${userContext.monthlyExpense.toFixed(2)}`);
     }
-    if (userContext.workspaceType) {
-      parts.push(`Perfil da carteira: ${userContext.workspaceType === 'business' ? 'Pessoa Jurídica / Negócio' : 'Pessoa Física / Pessoal'}`);
+    if (userContext.netSavings !== undefined) {
+      parts.push(`Resultado líquido do mês: R$ ${userContext.netSavings.toFixed(2)} (Taxa de poupança: ${userContext.savingsRate ?? 0}%)`);
     }
     if (userContext.topCategories && userContext.topCategories.length > 0) {
       const topStr = userContext.topCategories
-        .slice(0, 3)
-        .map((c) => `${c.name}: R$ ${c.amount.toFixed(2)}`)
-        .join(', ');
+        .map((c) => `${c.name}: R$ ${c.amount.toFixed(2)} (${c.percentage}%)`)
+        .join(' | ');
       parts.push(`Principais categorias de gastos: ${topStr}`);
+    }
+    if (userContext.largestExpenses && userContext.largestExpenses.length > 0) {
+      const expStr = userContext.largestExpenses
+        .map((e) => `"${e.note || e.category}" (R$ ${e.amount.toFixed(2)})`)
+        .join(', ');
+      parts.push(`Maiores gastos individuais do mês: ${expStr}`);
     }
 
     if (parts.length > 0) {
-      contextSnippet = `\n\n[CONTEXTO FINANCEIRO ATUAL DO USUÁRIO NO APP]:\n${parts.join('\n')}\nUtilize esses dados se forem relevantes para responder de forma personalizada.`;
+      contextSnippet = `\n\n[CONTEXTO FINANCEIRO REAL DO USUÁRIO NO APP SEUGESTOR]:\n${parts.join('\n')}\nUtilize esses dados se forem relevantes para responder de forma personalizada. Quando o usuário pedir análise dos gastos, use esses números reais com precisão consultiva e olhar estratégico.`;
     }
   }
 
@@ -191,12 +230,81 @@ export const callFinancialAdvisorChat = async (
  */
 export const generateOfflineAdvisoryResponse = (
   userQuery: string,
-  _userContext?: UserFinancialContext
+  userContext?: UserFinancialContext
 ): string => {
   const query = userQuery
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase();
+
+  // 0. Análise Inteligente de Gastos do Mês
+  if (
+    query.includes('analis') ||
+    (query.includes('gasto') && (query.includes('mes') || query.includes('orcamento'))) ||
+    query.includes('radiografia') ||
+    query.includes('onde investir o que sobra')
+  ) {
+    const income = userContext?.monthlyIncome || 0;
+    const expense = userContext?.monthlyExpense || 0;
+    const net = userContext?.netSavings ?? (income - expense);
+    const savingsRate = userContext?.savingsRate ?? (income > 0 ? Math.max(0, Math.round((net / income) * 100)) : 0);
+    const month = userContext?.selectedMonthName || 'deste mês';
+    const isPositive = net >= 0;
+
+    if (income === 0 && expense === 0) {
+      return (
+        `Olá! Analisei seu painel para **${month}**, mas ainda não encontrei lançamentos registrados.\n\n` +
+        `Assim que você registrar suas primeiras receitas ou despesas (pelo botão "+" ou pelo comando de voz), clique aqui novamente! Farei uma radiografia detalhada das suas categorias, mostrarei onde estão os maiores custos e te orientarei sobre onde investir a sobra com máxima eficiência.\n\n` +
+        `Gostaria de tirar alguma dúvida sobre investimentos ou planejamento financeiro enquanto isso?`
+      );
+    }
+
+    let categoriesText = '';
+    if (userContext?.topCategories && userContext.topCategories.length > 0) {
+      categoriesText = userContext.topCategories
+        .slice(0, 4)
+        .map((c, i) => `   ${i + 1}. **${c.name}:** R$ ${c.amount.toFixed(2)} (${c.percentage}% das despesas)`)
+        .join('\n');
+    }
+
+    let strategyText = '';
+    if (isPositive) {
+      if (savingsRate >= 20) {
+        strategyText =
+          `• **Taxa de Poupança de Alta Performance (${savingsRate}%):** Meus parabéns! Você está acima da métrica padrão de excelência financeira (20%).\n` +
+          `• **Onde aplicar sua sobra de R$ ${net.toFixed(2)}:**\n` +
+          `   - Se ainda não tiver de 3 a 6 meses de custos em **Reserva de Emergência**, aloque no **Tesouro Selic** ou em **CDB 100% CDI** com liquidez imediata e garantia do FGC.\n` +
+          `   - Se sua reserva já estiver completa, é hora de alocar no **Tesouro IPCA+** (para travar ganho real acima da inflação) ou em **ações de empresas perenes e FIIs** para gerar renda passiva.`;
+      } else {
+        strategyText =
+          `• **Taxa de Poupança Moderada (${savingsRate}%):** Suas contas fecham no positivo, mas com margem estreita.\n` +
+          `• **Estratégia Recomendada:** Aplique a regra do "Pague-se Primeiro" — transfira os **R$ ${net.toFixed(2)}** para uma conta de investimento logo que receber seus rendimentos, evitando que fiquem na conta corrente e se dissolvam em compras por impulso.`;
+      }
+    } else {
+      strategyText =
+        `• **Alerta de Déficit no Mês:** Suas despesas superaram suas receitas em **R$ ${Math.abs(net).toFixed(2)}**.\n` +
+        `• **Plano de Ajuste Imediato:** Identifique nas suas maiores categorias quais custos não são essenciais e postergue compras de estilo de vida para o próximo ciclo, prevenindo o uso de cheque especial ou rotativo de cartão.`;
+    }
+
+    const topCategoryName = userContext?.topCategories?.[0]?.name;
+    const closingQuestion = topCategoryName
+      ? `O que você achou desses pontos? Gostaria que eu te ajudasse a encontrar oportunidades de economia em **${topCategoryName}** ou prefere simular uma meta de investimento para essa sobra?`
+      : `O que você achou desses números? Como você gostaria de direcionar suas metas financeiras para as próximas semanas?`;
+
+    return (
+      `Olá! Fiz uma análise aprofundada dos seus gastos e finanças de **${month}**:\n\n` +
+      `📊 **1. Panorama Geral do Mês:**\n` +
+      `• **Receitas Totais:** R$ ${income.toFixed(2)}\n` +
+      `• **Despesas Totais:** R$ ${expense.toFixed(2)}\n` +
+      `• **Resultado Líquido:** **R$ ${net.toFixed(2)}** ${isPositive ? '✅ (Positivo)' : '⚠️ (Atenção)'}\n\n` +
+      (categoriesText
+        ? `🔍 **2. Radiografia dos Maiores Gastos:**\n${categoriesText}\n\n`
+        : '') +
+      `💡 **3. Diagnóstico Estratégico & Investimentos:**\n` +
+      `${strategyText}\n\n` +
+      `💬 **Vamos conversar:**\n${closingQuestion}`
+    );
+  }
 
   if (query.includes('sac') || query.includes('price') || query.includes('financiamento imobiliario') || query.includes('amortizar')) {
     return (

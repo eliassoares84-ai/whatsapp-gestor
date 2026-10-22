@@ -427,13 +427,13 @@
     "noExpensesDistribution": "There are no expenses yet to build category distribution."
   },
   "premiumTeaser": {
-    "titleActive": "AI Consulting Active",
+    "titleActive": "Expense Analysis with AI Advisor",
     "titleLocked": "Monthly Smart Analysis",
-    "subtitleActive": "Your premium insights are ready to review.",
+    "subtitleActive": "Get a complete spending diagnostic and chat directly with your AI Advisor.",
     "subtitleLocked": "Discover hidden spending patterns this month and where to invest what remains.",
     "income": "Income",
     "expense": "Expenses",
-    "ctaActive": "Open AI Consulting",
+    "ctaActive": "Analyze Expenses in Chat",
     "ctaLocked": "Unlock AI Analysis"
   },
   "transferModal": {

@@ -19,6 +19,7 @@ interface ChatState {
   messages: ChatMessage[];
   isThinking: boolean;
   sendMessage: (userText: string, context?: UserFinancialContext) => Promise<void>;
+  requestMonthlyAnalysis: (context: UserFinancialContext) => Promise<void>;
   clearHistory: () => void;
   resetChat: () => void;
 }
@@ -28,6 +29,22 @@ export const useChatStore = create<ChatState>()(
     (set, get) => ({
       messages: [getInitialWelcomeMessage()],
       isThinking: false,
+
+      requestMonthlyAnalysis: async (context: UserFinancialContext) => {
+        const promptText = '📊 Analisar meus gastos e o orçamento deste mês';
+        const currentMessages = get().messages;
+        const lastUserMsg = [...currentMessages].reverse().find((m) => m.sender === 'user');
+
+        if (
+          lastUserMsg &&
+          lastUserMsg.text === promptText &&
+          Date.now() - lastUserMsg.timestamp < 30000
+        ) {
+          return;
+        }
+
+        await get().sendMessage(promptText, context);
+      },
 
       sendMessage: async (userText: string, context?: UserFinancialContext) => {
         const text = userText.trim();

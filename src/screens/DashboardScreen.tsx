@@ -12,7 +12,6 @@ import {
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { AiInsightsModal } from '../components/dashboard/AiInsightsModal';
 import { DashboardBalanceCard } from '../components/dashboard/DashboardBalanceCard';
 import { DashboardHeader } from '../components/dashboard/DashboardHeader';
 import { DashboardQuickActions } from '../components/dashboard/DashboardQuickActions';
@@ -26,7 +25,7 @@ import { ChatbotFloatingButton } from '../components/chat/ChatbotFloatingButton'
 import { FinancialChatModal } from '../components/chat/FinancialChatModal';
 import type { UserFinancialContext } from '../services/financialChatService';
 import { PaywallScreen } from '../screens/PaywallScreen';
-import { generateFinancialInsights } from '../services/geminiService';
+import { useChatStore } from '../store/useChatStore';
 import { useFinanceStore, useThemeStore } from '../store/useFinanceStore';
 import type { Transaction } from '../types/finance.types';
 import { getLocalizedCategoryName } from '../utils/categoryLocalization';
@@ -74,9 +73,6 @@ const DashboardScreenBase: React.FC = () => {
     initialText?: string;
   }>({});
   const [isTransferModalVisible, setIsTransferModalVisible] = useState(false);
-  const [isInsightsVisible, setIsInsightsVisible] = useState(false);
-  const [isInsightsLoading, setIsInsightsLoading] = useState(false);
-  const [insights, setInsights] = useState<string[]>([]);
   const [isPaywallVisible, setIsPaywallVisible] = useState(false);
   const [isChatModalVisible, setIsChatModalVisible] = useState(false);
 
@@ -436,22 +432,92 @@ const DashboardScreenBase: React.FC = () => {
     [workspaces, currentWorkspaceId]
   );
 
+  const selectedMonthName = useMemo(() => {
+    const date = new Date(selectedYear, selectedMonth, 1);
+    const raw = date.toLocaleDateString(localeTag, { month: 'long' });
+    return uppercaseFirstLetter(raw);
+  }, [selectedYear, selectedMonth, localeTag]);
+
+  const { topCategories, largestExpenses } = useMemo(() => {
+    const expenseTransactions = monthTransactions.filter((tx) => tx.type === 'expense');
+    const totalExp = expenses > 0 ? expenses : 1;
+
+    const categoryTotals = new Map<string, number>();
+    for (const tx of expenseTransactions) {
+      const catName =
+        categoryNameById.get(tx.categoryId) ||
+        tx.categoryId ||
+        t('dashboard.transactionFallback', { defaultValue: 'Geral' });
+      categoryTotals.set(catName, (categoryTotals.get(catName) || 0) + tx.amount);
+    }
+
+    const sortedCats = Array.from(categoryTotals.entries())
+      .map(([name, amount]) => ({
+        name,
+        amount: Number(amount.toFixed(2)),
+        percentage: Math.round((amount / totalExp) * 100),
+      }))
+      .sort((a, b) => b.amount - a.amount);
+
+    const sortedExpenses = [...expenseTransactions]
+      .sort((a, b) => b.amount - a.amount)
+      .slice(0, 3)
+      .map((tx) => ({
+        note: tx.note || categoryNameById.get(tx.categoryId) || 'Despesa',
+        category: categoryNameById.get(tx.categoryId) || 'Geral',
+        amount: tx.amount,
+      }));
+
+    return {
+      topCategories: sortedCats.slice(0, 5),
+      largestExpenses: sortedExpenses,
+    };
+  }, [monthTransactions, expenses, categoryNameById, t]);
+
+  const netSavings = useMemo(() => income - expenses, [income, expenses]);
+  const savingsRate = useMemo(
+    () => (income > 0 ? Math.max(0, Math.round(((income - expenses) / income) * 100)) : 0),
+    [income, expenses]
+  );
+
   const userFinancialContext = useMemo<UserFinancialContext>(() => {
     return {
       currentBalance: balance,
       monthlyIncome: income,
       monthlyExpense: expenses,
+      netSavings,
+      savingsRate,
       currency,
       localeTag,
       workspaceType: currentWorkspace?.type || 'personal',
+      selectedMonthName,
+      selectedYear,
+      topCategories,
+      largestExpenses,
+      transactionCount: monthTransactions.length,
     };
-  }, [balance, income, expenses, currency, localeTag, currentWorkspace]);
+  }, [
+    balance,
+    income,
+    expenses,
+    netSavings,
+    savingsRate,
+    currency,
+    localeTag,
+    currentWorkspace,
+    selectedMonthName,
+    selectedYear,
+    topCategories,
+    largestExpenses,
+    monthTransactions.length,
+  ]);
 
   const openInsightsModal = () => {
     if (!isPremium) {
       setIsPaywallVisible(true);
     } else {
       setIsChatModalVisible(true);
+      void useChatStore.getState().requestMonthlyAnalysis(userFinancialContext);
     }
   };
 
@@ -643,18 +709,6 @@ const DashboardScreenBase: React.FC = () => {
       <TransferModal
         visible={isTransferModalVisible}
         onClose={() => setIsTransferModalVisible(false)}
-      />
-
-      <AiInsightsModal
-        visible={isInsightsVisible}
-        loading={isInsightsLoading}
-        insights={insights}
-        theme={theme}
-        cardBg={surfaceColor}
-        textPrimary={textColor}
-        textSecondary={mutedTextColor}
-        dashboardAccent={dashboardAccent}
-        onClose={() => setIsInsightsVisible(false)}
       />
 
       <PaywallScreen

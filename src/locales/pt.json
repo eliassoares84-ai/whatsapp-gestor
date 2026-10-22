@@ -427,13 +427,13 @@
     "noExpensesDistribution": "Ainda não há despesas para montar a distribuição por categoria."
   },
   "premiumTeaser": {
-    "titleActive": "Consultoria IA Ativa",
+    "titleActive": "Análise de Gastos com Consultor IA",
     "titleLocked": "Análise Inteligente do Mês",
-    "subtitleActive": "Seus insights premium estão prontos para consulta.",
+    "subtitleActive": "Receba um diagnóstico completo dos seus gastos e converse diretamente com o Consultor IA.",
     "subtitleLocked": "Descubra padrões ocultos nos seus gastos deste mês e saiba onde investir o que sobra.",
     "income": "Receitas",
     "expense": "Despesas",
-    "ctaActive": "Abrir Consultoria IA",
+    "ctaActive": "Analisar Gastos no Chat",
     "ctaLocked": "Desbloquear Análise IA"
   },
   "transferModal": {

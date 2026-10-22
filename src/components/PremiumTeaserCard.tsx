@@ -74,11 +74,11 @@ export const PremiumTeaserCard: React.FC<PremiumTeaserCardProps> = ({
           </View>
 
           <Text style={[styles.title, { color: titleColor }]}>
-            {isPremium ? t('premiumTeaser.titleActive', { defaultValue: 'Análise Financeira Ativa' }) : t('premiumTeaser.titleLocked', { defaultValue: 'Desbloqueie Insights por IA' })}
+            {isPremium ? t('premiumTeaser.titleActive', { defaultValue: 'Análise de Gastos com Consultor IA' }) : t('premiumTeaser.titleLocked', { defaultValue: 'Desbloqueie Insights por IA' })}
           </Text>
           <Text style={[styles.subtitle, { color: subtitleColor }]}>
             {isPremium
-              ? t('premiumTeaser.subtitleActive', { defaultValue: 'Seu assistente financeiro inteligente está monitorando suas finanças.' })
+              ? t('premiumTeaser.subtitleActive', { defaultValue: 'Receba um diagnóstico completo dos seus gastos e converse diretamente com o Consultor IA.' })
               : t('premiumTeaser.subtitleLocked', { defaultValue: 'Receba recomendações automáticas para otimizar seus gastos.' })}
           </Text>
         </View>
@@ -116,7 +116,7 @@ export const PremiumTeaserCard: React.FC<PremiumTeaserCardProps> = ({
           color={isPremium ? tokens.primary : tokens.textInverse}
         />
         <Text style={[styles.ctaText, { color: isPremium ? tokens.primary : tokens.textInverse }]}>
-          {isPremium ? 'Conversar com Consultor IA' : t('premiumTeaser.ctaLocked', { defaultValue: 'Conhecer Recursos PRO' })}
+          {isPremium ? t('premiumTeaser.ctaActive', { defaultValue: 'Analisar Gastos no Chat' }) : t('premiumTeaser.ctaLocked', { defaultValue: 'Conhecer Recursos PRO' })}
         </Text>
       </Pressable>
     </View>

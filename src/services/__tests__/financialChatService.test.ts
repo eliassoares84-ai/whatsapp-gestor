@@ -60,6 +60,41 @@ describe('financialChatService & Consultor Inteligente', () => {
       expect(response).toContain('Consultor Financeiro Inteligente');
       expect(response).toContain('Investimentos');
     });
+
+    it('deve analisar os gastos do mês com diagnóstico estruturado e sugestão de investimentos', () => {
+      const response = generateOfflineAdvisoryResponse('📊 Analisar meus gastos e o orçamento deste mês', {
+        monthlyIncome: 8000,
+        monthlyExpense: 5000,
+        netSavings: 3000,
+        savingsRate: 38,
+        selectedMonthName: 'Outubro',
+        topCategories: [
+          { name: 'Alimentação', amount: 2000, percentage: 40 },
+          { name: 'Moradia', amount: 1500, percentage: 30 },
+        ],
+      });
+
+      expect(response).toContain('Panorama Geral do Mês');
+      expect(response).toContain('8000.00');
+      expect(response).toContain('5000.00');
+      expect(response).toContain('3000.00');
+      expect(response).toContain('Radiografia dos Maiores Gastos');
+      expect(response).toContain('Alimentação');
+      expect(response).toContain('Diagnóstico Estratégico & Investimentos');
+      expect(response).toContain('Tesouro Selic');
+      expect(response).toContain('Vamos conversar');
+    });
+
+    it('deve retornar mensagem amigável de incentivo se o mês não tiver lançamentos', () => {
+      const response = generateOfflineAdvisoryResponse('📊 Analisar meus gastos e o orçamento deste mês', {
+        monthlyIncome: 0,
+        monthlyExpense: 0,
+        selectedMonthName: 'Outubro',
+      });
+
+      expect(response).toContain('ainda não encontrei lançamentos registrados');
+      expect(response).toContain('Outubro');
+    });
   });
 
   describe('useChatStore', () => {
@@ -78,6 +113,40 @@ describe('financialChatService & Consultor Inteligente', () => {
       expect(state.messages[1]?.text).toBe('Qual a diferença entre SAC e Price?');
       expect(state.messages[2]?.sender).toBe('assistant');
       expect(state.messages[2]?.text).toContain('SAC');
+    });
+
+    it('dispara requestMonthlyAnalysis com contexto financeiro e recebe diagnóstico', async () => {
+      await useChatStore.getState().requestMonthlyAnalysis({
+        monthlyIncome: 10000,
+        monthlyExpense: 6000,
+        netSavings: 4000,
+        savingsRate: 40,
+        selectedMonthName: 'Outubro',
+        topCategories: [{ name: 'Moradia', amount: 3000, percentage: 50 }],
+      });
+
+      const state = useChatStore.getState();
+      expect(state.messages.length).toBe(3);
+      expect(state.messages[1]?.text).toContain('📊 Analisar meus gastos');
+      expect(state.messages[2]?.text).toContain('Panorama Geral do Mês');
+    });
+
+    it('evita duplicidade de requestMonthlyAnalysis se chamado consecutivamente', async () => {
+      const context = {
+        monthlyIncome: 10000,
+        monthlyExpense: 6000,
+        netSavings: 4000,
+        savingsRate: 40,
+      };
+
+      await useChatStore.getState().requestMonthlyAnalysis(context);
+      const countAfterFirst = useChatStore.getState().messages.length;
+
+      // Imediatamente tenta chamar novamente
+      await useChatStore.getState().requestMonthlyAnalysis(context);
+      const countAfterSecond = useChatStore.getState().messages.length;
+
+      expect(countAfterSecond).toBe(countAfterFirst);
     });
 
     it('limpa o histórico mantendo a mensagem inicial', async () => {
