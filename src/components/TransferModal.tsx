@@ -15,15 +15,11 @@ import {
   View,
 } from 'react-native';
 
-import { useFinanceStore } from '../store/useFinanceStore';
+import { useFinanceStore, useThemeStore } from '../store/useFinanceStore';
 import type { WorkspaceId } from '../types/finance.types';
 import { getLocalizedWorkspaceName } from '../utils/workspaceLocalization';
 import { uppercaseFirstLetter } from '../utils/textInputFormat';
-
-const APP_BG = '#0A0A0A';
-const CARD_BG = '#121212';
-const TEXT_PRIMARY = '#FFFFFF';
-const TEXT_SECONDARY = '#999999';
+import { getThemeTokens } from '../styles/themes';
 
 interface TransferModalProps {
   visible: boolean;
@@ -53,6 +49,8 @@ export const TransferModal: React.FC<TransferModalProps> = ({
 }) => {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
+  const theme = useThemeStore((state) => state.theme);
+  const tokens = getThemeTokens(theme);
   const { currentWorkspaceId, workspaces, transferBetweenWorkspaces } =
     useFinanceStore();
 
@@ -171,7 +169,7 @@ export const TransferModal: React.FC<TransferModalProps> = ({
     showColorDot: boolean
   ) => (
     <View style={styles.fieldBlock}>
-      <Text style={[styles.label, { color: TEXT_PRIMARY }]}>{label}</Text>
+      <Text style={[styles.label, { color: tokens.textPrimary }]}>{label}</Text>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -187,8 +185,8 @@ export const TransferModal: React.FC<TransferModalProps> = ({
               style={[
                 styles.selectorChip,
                 {
-                  borderColor: isSelected ? workspace.themeColor : 'rgba(255, 255, 255, 0.08)',
-                  backgroundColor: isSelected ? `${workspace.themeColor}18` : APP_BG,
+                  borderColor: isSelected ? workspace.themeColor : tokens.border,
+                  backgroundColor: isSelected ? `${workspace.themeColor}18` : tokens.surfaceInteractive,
                 },
               ]}
             >
@@ -203,7 +201,7 @@ export const TransferModal: React.FC<TransferModalProps> = ({
               <Text
                 style={[
                   styles.selectorText,
-                  { color: isSelected ? TEXT_PRIMARY : TEXT_SECONDARY },
+                  { color: isSelected ? tokens.textPrimary : tokens.textSecondary },
                 ]}
               >
                 {getLocalizedWorkspaceName(workspace, t)}
@@ -216,23 +214,23 @@ export const TransferModal: React.FC<TransferModalProps> = ({
   );
 
   return (
-    <Modal transparent visible={visible} animationType="fade" onRequestClose={handleClose}>
-      <View style={[styles.overlay, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+    <Modal transparent visible={visible} animationType="fade" statusBarTranslucent onRequestClose={handleClose}>
+      <View style={[styles.overlay, { backgroundColor: tokens.overlay, paddingTop: insets.top, paddingBottom: insets.bottom }]}>
         <KeyboardAvoidingView
           style={styles.keyboardAvoiding}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           keyboardVerticalOffset={insets.bottom + 8}
         >
-          <View style={[styles.card, { backgroundColor: CARD_BG }]}> 
+          <View style={[styles.card, { backgroundColor: tokens.card, borderColor: tokens.borderStrong }]}> 
             <ScrollView
               showsVerticalScrollIndicator={false}
               keyboardShouldPersistTaps="handled"
               contentContainerStyle={styles.cardContent}
             >
               <View style={styles.header}>
-                <Text style={[styles.title, { color: TEXT_PRIMARY }]}>{t('transferModal.title')}</Text>
+                <Text style={[styles.title, { color: tokens.textPrimary }]}>{t('transferModal.title')}</Text>
                 <Pressable onPress={handleClose}>
-                  <MaterialCommunityIcons name="close" size={24} color={TEXT_SECONDARY} />
+                  <MaterialCommunityIcons name="close" size={24} color={tokens.textSecondary} />
                 </Pressable>
               </View>
 
@@ -253,19 +251,19 @@ export const TransferModal: React.FC<TransferModalProps> = ({
               )}
 
               <View style={styles.fieldBlock}>
-                <Text style={[styles.label, { color: TEXT_PRIMARY }]}>{t('transferModal.amount')}</Text>
+                <Text style={[styles.label, { color: tokens.textPrimary }]}>{t('transferModal.amount')}</Text>
                 <TextInput
                   value={amountText}
                   onChangeText={(value) => setAmountText(formatCurrencyInput(value))}
                   placeholder="0,00"
-                  placeholderTextColor={TEXT_SECONDARY}
+                  placeholderTextColor={tokens.textTertiary}
                   keyboardType="numeric"
-                  style={[styles.amountInput, { color: TEXT_PRIMARY, backgroundColor: APP_BG }]}
+                  style={[styles.amountInput, { color: tokens.textPrimary, backgroundColor: tokens.background, borderColor: tokens.border }]}
                 />
               </View>
 
               <View style={styles.fieldBlock}>
-                <Text style={[styles.label, { color: TEXT_PRIMARY }]}>{t('transferModal.description')}</Text>
+                <Text style={[styles.label, { color: tokens.textPrimary }]}>{t('transferModal.description')}</Text>
                 <TextInput
                   value={description}
                   onChangeText={(value) => {
@@ -273,14 +271,24 @@ export const TransferModal: React.FC<TransferModalProps> = ({
                     setIsDescriptionDirty(true);
                   }}
                   placeholder={t('transferModal.descriptionPlaceholder')}
-                  placeholderTextColor={TEXT_SECONDARY}
+                  placeholderTextColor={tokens.textTertiary}
                   autoCapitalize="sentences"
-                  style={[styles.descriptionInput, { color: TEXT_PRIMARY, backgroundColor: APP_BG }]}
+                  style={[styles.descriptionInput, { color: tokens.textPrimary, backgroundColor: tokens.background, borderColor: tokens.border }]}
                 />
               </View>
 
-              <Pressable style={styles.confirmButton} onPress={handleConfirm}>
-                <Text style={styles.confirmButtonText}>{t('transferModal.confirm')}</Text>
+              <Pressable
+                style={({ pressed }) => [
+                  styles.confirmButton,
+                  {
+                    backgroundColor: tokens.primary,
+                    borderColor: tokens.primary,
+                    opacity: pressed ? 0.85 : 1,
+                  },
+                ]}
+                onPress={handleConfirm}
+              >
+                <Text style={[styles.confirmButtonText, { color: '#FFFFFF' }]}>{t('transferModal.confirm')}</Text>
               </Pressable>
             </ScrollView>
           </View>
@@ -350,29 +358,31 @@ const styles = StyleSheet.create({
   },
   amountInput: {
     borderRadius: 16,
+    borderWidth: 1,
     paddingHorizontal: 16,
-    paddingVertical: 16,
-    fontSize: 28,
+    paddingVertical: 14,
+    fontSize: 26,
     fontWeight: '700',
   },
   descriptionInput: {
     borderRadius: 14,
+    borderWidth: 1,
     paddingHorizontal: 14,
     paddingVertical: 12,
     fontSize: 15,
     fontWeight: '500',
   },
   confirmButton: {
-    borderRadius: 16,
-    backgroundColor: '#d2ff61',
-    paddingVertical: 16,
+    height: 48,
+    borderRadius: 14,
+    borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 4,
+    marginTop: 8,
   },
   confirmButtonText: {
-    color: '#000000',
     fontSize: 15,
-    fontWeight: '800',
+    fontWeight: '700',
+    letterSpacing: -0.1,
   },
 });

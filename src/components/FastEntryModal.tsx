@@ -1482,7 +1482,6 @@
           visible={isPaywallVisible}
           onClose={() => setIsPaywallVisible(false)}
           onSubscribe={() => {
-            togglePremiumStatus();
             setIsPaywallVisible(false);
           }}
         />

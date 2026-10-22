@@ -49,8 +49,9 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
       setPremiumStatus(true);
       onSubscribe();
       Alert.alert(
-        '🌟 Bem-vindo ao SeuGestor PRO!',
-        'Seu acesso ao Consultor Financeiro por IA e aos Comandos de Voz está liberado com sucesso.'
+        'Bem-vindo ao SeuGestor PRO!',
+        'Seu acesso ao Consultor Financeiro por IA, à Análise Inteligente de Gastos e aos Comandos de Voz ilimitados foi liberado com sucesso.',
+        [{ text: 'Aproveitar Agora' }]
       );
     }, 450);
   };
@@ -60,11 +61,15 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
     setTimeout(() => {
       setIsProcessing(false);
       if (isPremium) {
-        Alert.alert('Assinatura Ativa', 'Sua assinatura PRO já está ativa neste dispositivo.');
+        Alert.alert('Assinatura Ativa', 'Sua assinatura PRO já está ativa e vinculada a este dispositivo.', [
+          { text: 'OK' },
+        ]);
       } else {
         setPremiumStatus(true);
         onSubscribe();
-        Alert.alert('Restaurado!', 'Sua assinatura SeuGestor PRO foi restaurada com sucesso.');
+        Alert.alert('Assinatura Restaurada!', 'Seu acesso ao SeuGestor PRO foi restaurado com sucesso.', [
+          { text: 'Acessar Recursos' },
+        ]);
       }
     }, 400);
   };

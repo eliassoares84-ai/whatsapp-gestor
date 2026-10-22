@@ -21,6 +21,8 @@ import {
   scheduleCreditCardReminders,
   scheduleRecurringReminders,
 } from './src/services/notificationService';
+import './src/services/alertService';
+import { FintechAlertModal } from './src/components/common/FintechAlertModal';
 import { useFinanceStore, useThemeStore } from './src/store/useFinanceStore';
 import { lightTheme, darkTheme, darkTokens, lightTokens } from './src/styles/themes';
 import { CopilotProvider } from './src/utils/copilotSafe';
@@ -193,6 +195,7 @@ export default function App() {
               {isUnlocked ? <AppNavigator /> : <LockScreen onUnlockSuccess={() => setIsUnlocked(true)} />}
             </CopilotProvider>
           </NavigationContainer>
+          <FintechAlertModal />
         </View>
       </SafeAreaProvider>
     </GlobalErrorBoundary>
