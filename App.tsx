@@ -83,6 +83,24 @@ class GlobalErrorBoundary extends React.Component<
   }
 }
 
+const roundedSvgMaskPath = ({
+  size,
+  position,
+  canvasSize,
+}: {
+  size: any;
+  position: any;
+  canvasSize: any;
+}) => {
+  const x = Number(position?.x?._value ?? 0);
+  const y = Number(position?.y?._value ?? 0);
+  const w = Number(size?.x?._value ?? 0);
+  const h = Number(size?.y?._value ?? 0);
+  const r = Math.max(0, Math.min(16, w / 2, h / 2));
+
+  return `M0,0H${canvasSize.x}V${canvasSize.y}H0V0ZM${x + r},${y}H${x + w - r}Q${x + w},${y} ${x + w},${y + r}V${y + h - r}Q${x + w},${y + h} ${x + w - r},${y + h}H${x + r}Q${x},${y + h} ${x},${y + h - r}V${y + r}Q${x},${y} ${x + r},${y}Z`;
+};
+
 const LOCK_GRACE_PERIOD_MS = 3_000;
 
 export default function App() {
@@ -176,9 +194,11 @@ export default function App() {
         <View style={{ backgroundColor: tokens.background, flex: 1 }}>
           <NavigationContainer theme={navTheme}>
             <CopilotProvider
-              overlay="view"
+              overlay="svg"
+              androidStatusBarVisible={true}
+              svgMaskPath={roundedSvgMaskPath}
               animated
-              backdropColor={theme === 'dark' ? 'rgba(0, 0, 0, 0.72)' : 'rgba(16, 24, 40, 0.50)'}
+              backdropColor={theme === 'dark' ? 'rgba(0, 0, 0, 0.72)' : 'rgba(16, 24, 40, 0.55)'}
               arrowColor={tokens.card}
               tooltipComponent={PremiumCopilotTooltip}
               tooltipStyle={{

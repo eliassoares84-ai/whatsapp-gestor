@@ -111,6 +111,7 @@ const DashboardScreenBase: React.FC = () => {
   }, [navigation]);
 
   const tourStartInFlightRef = useRef(false);
+  const scrollViewRef = useRef<ScrollView>(null);
   const insets = useSafeAreaInsets();
   const tabBarHeight = useBottomTabBarHeight();
   const isFocused = useIsFocused();
@@ -214,7 +215,7 @@ const DashboardScreenBase: React.FC = () => {
           return;
         }
         tourStartInFlightRef.current = true;
-        void start('dashboard_balance').finally(() => {
+        void start('dashboard_balance', scrollViewRef.current).finally(() => {
           tourStartInFlightRef.current = false;
         });
       }, 900);
@@ -233,7 +234,7 @@ const DashboardScreenBase: React.FC = () => {
         return;
       }
       tourStartInFlightRef.current = true;
-      void start('dashboard_balance').finally(() => {
+      void start('dashboard_balance', scrollViewRef.current).finally(() => {
         tourStartInFlightRef.current = false;
       });
     }, 1200);
@@ -241,6 +242,25 @@ const DashboardScreenBase: React.FC = () => {
       clearTimeout(timeoutId);
     };
   }, [isFocused, shouldAutoStartTour, start]);
+
+  useEffect(() => {
+    const onStepChange = (step?: { name?: string }) => {
+      if (!isFocused || !step) {
+        return;
+      }
+      if (step.name === 'dashboard_transactions') {
+        scrollViewRef.current?.scrollToEnd({ animated: false });
+      } else if (step.name === 'dashboard_balance') {
+        scrollViewRef.current?.scrollTo({ y: 0, animated: false });
+      } else if (step.name === 'dashboard_ai') {
+        scrollViewRef.current?.scrollTo({ y: 160, animated: false });
+      }
+    };
+    copilotEvents.on('stepChange', onStepChange);
+    return () => {
+      copilotEvents.off('stepChange', onStepChange);
+    };
+  }, [copilotEvents, isFocused]);
 
   useEffect(() => {
     const onStop = () => {
@@ -584,6 +604,7 @@ const DashboardScreenBase: React.FC = () => {
       </View>
 
       <ScrollView
+        ref={scrollViewRef}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={[
           styles.scrollContent,

@@ -10,10 +10,10 @@ type CopilotHook = {
   goToPrev?: () => Promise<void>;
   goToNth: (step: number) => Promise<void>;
   stop: () => Promise<void>;
-  start: (fromStep?: string) => Promise<void>;
+  start: (fromStep?: string, suppliedScrollView?: any) => Promise<void>;
   copilotEvents: {
-    on: (eventName: string, callback: () => void) => void;
-    off: (eventName: string, callback: () => void) => void;
+    on: (eventName: string, callback: (data?: any) => void) => void;
+    off: (eventName: string, callback: (data?: any) => void) => void;
   };
 };
 

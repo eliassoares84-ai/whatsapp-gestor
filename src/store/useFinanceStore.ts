@@ -114,7 +114,7 @@ const isSameMonth = (dateA: Date, dateB: Date): boolean =>
   dateA.getMonth() === dateB.getMonth() &&
   dateA.getFullYear() === dateB.getFullYear();
 
-export const TOUR_GUIDE_VERSION = 5;
+export const TOUR_GUIDE_VERSION = 6;
 
 export type QuizFocus = 'Sair das Dívidas' | 'Poupar/Investir' | 'Gerir Negócio';
 export type QuizScope = 'Vida Pessoal' | 'Empresa/Serviços' | 'Ambos';
